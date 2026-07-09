@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayush Chaurasia</title>
   <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
-  <link rel="stylesheet" href="assets/style.css?v=8">
+  <link rel="stylesheet" href="assets/style.css?v=9">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
 </head>
 <body>
@@ -89,15 +89,15 @@
   </footer>
 
 </div>
-<script src="assets/site.js?v=8"></script>
+<script src="assets/site.js?v=9"></script>
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
   (async () => {
     const [repos, scholar, cocreated] = await Promise.all([
-      fetch("data/committer_to.json?v=8").then(r => r.json()).catch(() => []),
-      fetch("data/scholar.json?v=8").then(r => r.json()).catch(() => null),
-      fetch("data/cocreated.json?v=8").then(r => r.json()).catch(() => []),
+      fetch("data/committer_to.json?v=9").then(r => r.json()).catch(() => []),
+      fetch("data/scholar.json?v=9").then(r => r.json()).catch(() => null),
+      fetch("data/cocreated.json?v=9").then(r => r.json()).catch(() => []),
     ]);
 
     repos.sort((a, b) => b.stars - a.stars);

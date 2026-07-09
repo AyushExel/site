@@ -79,7 +79,18 @@ async function renderScholar(mountId, dataUrl) {
     <p class="small-mono" style="margin-top:0.8rem">Source: <a href="${s.profile_url}">Google Scholar</a> · updated ${s.updated}</p>`;
 }
 
-/* Videos — renders data/videos.json. */
+/* Videos — renders data/videos.json as lite YouTube embeds:
+   thumbnail + play button; clicking swaps in the real player (fast page load,
+   playable in place). Falls back to a plain link card if no video id. */
+function ytId(url) {
+  const m = url.match(/[?&]v=([\w-]{6,})/) || url.match(/youtu\.be\/([\w-]{6,})/);
+  return m ? m[1] : null;
+}
+function playVideo(el, id) {
+  el.outerHTML = `<iframe class="ytframe" src="https://www.youtube.com/embed/${id}?autoplay=1"
+    title="YouTube video" frameborder="0" allowfullscreen
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+}
 async function renderVideos(mountId, dataUrl) {
   const mount = document.getElementById(mountId);
   if (!mount) return;
@@ -91,12 +102,22 @@ async function renderVideos(mountId, dataUrl) {
     return;
   }
   mount.innerHTML = `<div class="grid-2">${vids
-    .map(
-      (v) => `
-    <div class="card video">
-      <span class="title"><a href="${v.url}">${v.title}</a></span>
-      <span class="tag">${v.tag || "video"}</span>
-    </div>`
-    )
+    .map((v) => {
+      const id = ytId(v.url);
+      const thumb = id
+        ? `<button class="thumb" onclick="playVideo(this, '${id}')" aria-label="Play: ${v.title.replace(/"/g, "&quot;")}">
+             <img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy">
+             <span class="playbtn" aria-hidden="true">▶</span>
+           </button>`
+        : "";
+      return `
+    <div class="card vidcard">
+      ${thumb}
+      <div class="vidbody">
+        <span class="title"><a href="${v.url}">${v.title}</a></span>
+        <span class="tag">${v.tag || "video"}</span>
+      </div>
+    </div>`;
+    })
     .join("")}</div>`;
 }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayush Chaurasia</title>
   <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
-  <link rel="stylesheet" href="assets/style.css?v=6">
+  <link rel="stylesheet" href="assets/style.css?v=7">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
 </head>
 <body>
@@ -30,9 +30,16 @@
   <header class="hero">
     <span class="eyebrow">Open-source ML engineering &amp; research</span>
     <h1>Ayush Chaurasia</h1>
-    <p class="dek">Building ML infrastructure and computer-vision tools in the open —
-    <a href="https://lancedb.com">LanceDB</a> today; co-author of YOLOv8 at
-    <a href="https://ultralytics.com">Ultralytics</a> before that.</p>
+    <p class="dek">ML infrastructure and computer vision, built in the open.</p>
+    <p class="bio">I'm currently at <a href="https://lancedb.com">LanceDB</a>, building the
+    multimodal lakehouse — the data infrastructure behind search, retrieval, and training for
+    AI systems. Before that I led AI at <a href="https://ultralytics.com">Ultralytics</a>,
+    where I co-authored YOLOv8 and the Ultralytics framework, and led open-source integrations
+    and partnerships at <a href="https://wandb.ai">Weights&nbsp;&amp;&nbsp;Biases</a> — bringing
+    experiment tracking to many of the ecosystem's most-used ML libraries, from YOLOv5 and
+    Hugging&nbsp;Face Transformers to Catalyst and Tianshou. On the side I do encoder research
+    (see the <a href="blog/">blog</a>) and teach ML on
+    <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>.</p>
     <div class="links">
       <a href="https://github.com/AyushExel">GitHub</a>
       <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>
@@ -83,15 +90,15 @@
   </footer>
 
 </div>
-<script src="assets/site.js?v=6"></script>
+<script src="assets/site.js?v=7"></script>
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
   (async () => {
     const [repos, scholar, cocreated] = await Promise.all([
-      fetch("data/committer_to.json?v=6").then(r => r.json()).catch(() => []),
-      fetch("data/scholar.json?v=6").then(r => r.json()).catch(() => null),
-      fetch("data/cocreated.json?v=6").then(r => r.json()).catch(() => []),
+      fetch("data/committer_to.json?v=7").then(r => r.json()).catch(() => []),
+      fetch("data/scholar.json?v=7").then(r => r.json()).catch(() => null),
+      fetch("data/cocreated.json?v=7").then(r => r.json()).catch(() => []),
     ]);
 
     repos.sort((a, b) => b.stars - a.stars);

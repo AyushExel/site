@@ -281,3 +281,10 @@ footer.site {
   display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
 }
 footer.site a { color: var(--muted); }
+
+/* hero bio paragraph */
+.hero .bio {
+  margin: 0.85rem 0 0; font-size: 0.99rem; line-height: 1.65; color: var(--muted);
+  max-width: 46rem;
+}
+.hero .bio a { color: var(--accent-ink); }

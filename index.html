@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ayush Chaurasia</title>
+  <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="brand" href="./">Ayush Chaurasia</a>
+    <a class="item" href="./" aria-current="page">Home</a>
+    <a class="item" href="blog/">Blog</a>
+    <a class="item" href="tutorials/">Tutorials &amp; Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐ theme</button>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Open-source ML engineering &amp; research</span>
+    <h1>Ayush Chaurasia</h1>
+    <p class="dek">I build machine-learning infrastructure and computer-vision tools in the open —
+    currently at <a href="https://lancedb.com">LanceDB</a>; previously at
+    <a href="https://ultralytics.com">Ultralytics</a>, where I co-authored YOLOv8 and the
+    Ultralytics framework, and at Weights&nbsp;&amp;&nbsp;Biases.</p>
+    <div class="links">
+      <a href="https://github.com/AyushExel">GitHub</a>
+      <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>
+      <a href="https://x.com/loldedxd">X / Twitter</a>
+      <a id="scholar-link" href="#scholar">Scholar</a>
+      <a href="mailto:ayush@lancedb.com">Email</a>
+    </div>
+  </header>
+
+  <section id="committer-to">
+    <span class="eyebrow">Committer to</span>
+    <h2>Open-source contributions</h2>
+    <p class="small-mono" style="margin:0 0 1rem">Repositories with my merged PRs, sorted by stars. Auto-refreshed from the GitHub API.</p>
+    <div id="committer-mount"><p class="small-mono">Loading…</p></div>
+  </section>
+
+  <section id="co-created">
+    <span class="eyebrow">Co-created</span>
+    <h2>Things I helped build</h2>
+    <div id="cocreated-mount" class="stack"><p class="small-mono">Loading…</p></div>
+  </section>
+
+  <section id="scholar">
+    <span class="eyebrow">Research</span>
+    <h2>Citations &amp; publications</h2>
+    <div id="scholar-mount"><p class="small-mono">Loading…</p></div>
+  </section>
+
+  <section id="writing">
+    <span class="eyebrow">Latest writing</span>
+    <h2>From the blog</h2>
+    <div class="stack">
+      <div class="card post">
+        <span class="date">July 2026</span>
+        <h3><a href="blog/rope-prior-art/">A Little RoPE, a Lot of Prior Art</a></h3>
+        <p>Three weeks of controlled RoPE-for-CLIP experiments, one adversarial literature
+        review, and the ICLR 2025 paper that had already published my headline result.</p>
+      </div>
+    </div>
+    <p style="margin-top:1rem"><a href="blog/">All posts →</a></p>
+  </section>
+
+  <footer class="site">
+    <span>© <span id="y"></span> Ayush Chaurasia</span>
+    <span><a href="https://github.com/AyushExel/site">Source on GitHub</a></span>
+  </footer>
+
+</div>
+<script src="assets/site.js"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+  renderCommitterTo("committer-mount", "data/committer_to.json", 6);
+  renderScholar("scholar-mount", "data/scholar.json");
+
+  // Co-created: curated list in data/cocreated.json (edit that file to add projects).
+  (async () => {
+    const mount = document.getElementById("cocreated-mount");
+    try {
+      const items = await (await fetch("data/cocreated.json")).json();
+      mount.innerHTML = items.map(p => `
+        <div class="card project">
+          <div class="top">
+            <h3><a href="${p.url}">${p.name}</a></h3>
+            <span class="meta">${p.stars ? `<span class="stars">★ ${p.stars}</span> · ` : ""}${p.role}</span>
+          </div>
+          <p>${p.desc}</p>
+          ${p.paper ? `<a class="paper" href="${p.paper.url}">📄 ${p.paper.label}</a>` : ""}
+        </div>`).join("");
+    } catch { mount.innerHTML = ""; }
+  })();
+
+  // Point the hero Scholar link at the profile once data loads.
+  fetch("data/scholar.json").then(r => r.json()).then(s => {
+    if (s.profile_url) document.getElementById("scholar-link").href = s.profile_url;
+  }).catch(() => {});
+</script>
+</body>
+</html>

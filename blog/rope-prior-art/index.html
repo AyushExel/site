@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A Little RoPE, a Lot of Prior Art · Ayush Chaurasia</title>
+  <meta name="description" content="Controlled RoPE-for-CLIP experiments, an adversarial literature review, and the ICLR 2025 paper that got there first.">
+  <link rel="stylesheet" href="../../assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+</head>
+<body>
+<style>
+  :root {
+    color-scheme: light dark;
+    --ground: #f7f8fa;
+    --card: #ffffff;
+    --ink: #1a222e;
+    --muted: #49535f;
+    --line: #d5dbe3;
+    --accent: #2b50d8;
+    --accent-ink: #24399b;
+    --accent-soft: #e9edfb;
+    --dead: #a8352a;
+    --dead-soft: #f7e9e7;
+    --alive: #276b43;
+    --alive-soft: #e6f2ea;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Charter, Georgia, serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --ground: #131820;
+      --card: #1b212b;
+      --ink: #e6eaf1;
+      --muted: #a5aeba;
+      --line: #303947;
+      --accent: #8ea5f7;
+      --accent-ink: #aebff9;
+      --accent-soft: #253052;
+      --dead: #e58275;
+      --dead-soft: #3d2823;
+      --alive: #7cc697;
+      --alive-soft: #21382b;
+    }
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --ground: #f7f8fa; --card: #ffffff; --ink: #1a222e; --muted: #49535f;
+    --line: #d5dbe3; --accent: #2b50d8; --accent-ink: #24399b; --accent-soft: #e9edfb;
+    --dead: #a8352a; --dead-soft: #f7e9e7; --alive: #276b43; --alive-soft: #e6f2ea;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #131820; --card: #1b212b; --ink: #e6eaf1; --muted: #a5aeba;
+    --line: #303947; --accent: #8ea5f7; --accent-ink: #aebff9; --accent-soft: #253052;
+    --dead: #e58275; --dead-soft: #3d2823; --alive: #7cc697; --alive-soft: #21382b;
+  }
+
+  html, body { background: var(--ground); }
+  body {
+    font-family: var(--serif);
+    color: var(--ink);
+    line-height: 1.68;
+    font-size: 1.0625rem;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 45rem; margin: 0 auto; padding: 3.25rem 1.4rem 5rem; }
+
+  a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  code { font-family: var(--mono); font-size: 0.88em; }
+
+  /* ---------- header ---------- */
+  header { display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 2.8rem; }
+  .masthead { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent-ink); padding-top: 0.6rem;
+  }
+  h1 {
+    font-size: clamp(2.05rem, 5.5vw, 3rem);
+    line-height: 1.08; margin: 0; font-weight: 700; letter-spacing: -0.015em;
+    color: var(--ink); text-wrap: balance;
+  }
+  .dek {
+    font-size: 1.14rem; line-height: 1.5; color: var(--muted);
+    font-style: italic; margin: 0; max-width: 38rem; text-wrap: balance;
+  }
+  .byline {
+    font-family: var(--mono); font-size: 0.78rem; color: var(--muted);
+    display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: baseline;
+  }
+  .byline span::after { content: "·"; margin-left: 0.6rem; color: var(--line); }
+  .byline span:last-child::after { content: ""; }
+
+  /* rotating phase planes — RoPE's frequency ladder */
+  .phases { flex: none; margin: 0; }
+  .phases svg { display: block; }
+  .phases circle { fill: none; stroke: var(--line); stroke-dasharray: 2.5 4; }
+  .phases line { stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+  .phases .hub { fill: var(--accent); stroke: none; }
+  .spin1, .spin2, .spin3 { transform-origin: 60px 60px; }
+  .spin1 { animation: rot 9s linear infinite; }
+  .spin2 { animation: rot 27s linear infinite; }
+  .spin3 { animation: rot 81s linear infinite; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .spin1, .spin2, .spin3 { animation: none; }
+    .spin1 { transform: rotate(64deg); } .spin2 { transform: rotate(200deg); } .spin3 { transform: rotate(310deg); }
+  }
+  .phases figcaption {
+    font-family: var(--mono); font-size: 0.62rem; color: var(--muted);
+    text-align: center; margin-top: 0.2rem;
+  }
+
+  /* ---------- tl;dr ---------- */
+  .tldr {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1.35rem 1.5rem; margin: 0 0 2.8rem;
+  }
+  .tldr .label {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent-ink); display: block; margin-bottom: 0.65rem;
+  }
+  .tldr ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  .tldr li::marker { color: var(--accent); }
+
+  /* ---------- sections ---------- */
+  section { margin-bottom: 3rem; }
+  h2 {
+    font-size: 1.48rem; line-height: 1.25; letter-spacing: -0.01em;
+    margin: 0 0 1.05rem; color: var(--ink); text-wrap: balance;
+  }
+  h2 .when {
+    display: block; font-family: var(--mono); font-size: 0.7rem; font-weight: 400;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 0.45rem;
+  }
+  p { margin: 0 0 1.05rem; }
+  p:last-child { margin-bottom: 0; }
+  .kicker { color: var(--accent-ink); font-weight: 700; }
+
+  ul.prose, ol.prose { margin: 0 0 1.05rem; padding-left: 1.3rem; display: flex; flex-direction: column; gap: 0.55rem; }
+  ol.prose li::marker, ul.prose li::marker { color: var(--accent); }
+
+  /* ---------- math ---------- */
+  .math {
+    margin: 1.35rem 0; padding: 1rem 1.2rem;
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    text-align: center; overflow-x: auto;
+    font-size: 1.05rem; line-height: 1.9;
+  }
+  .math .note {
+    display: block; font-family: var(--mono); font-size: 0.68rem; font-style: normal;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.5rem;
+  }
+  var { font-style: italic; font-family: var(--serif); }
+  .mtx {
+    display: inline-grid; grid-template-columns: auto auto;
+    column-gap: 1.3em; row-gap: 0.1em;
+    padding: 0.3em 0.55em; margin: 0 0.25em;
+    position: relative; vertical-align: middle;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .mtx::before, .mtx::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 0.4em;
+    border: 1.5px solid var(--ink);
+  }
+  .mtx::before { left: 0; border-right: none; }
+  .mtx::after { right: 0; border-left: none; }
+  .mtx span { text-align: center; }
+
+  /* ---------- code ---------- */
+  pre {
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.6;
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1rem 1.2rem; overflow-x: auto; margin: 1.35rem 0;
+    color: var(--ink); tab-size: 4;
+  }
+  pre .cm { color: var(--muted); font-style: italic; }
+  pre .kw { color: var(--accent-ink); }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; margin: 1.35rem 0; }
+  table {
+    border-collapse: collapse; width: 100%; min-width: 25rem;
+    font-size: 0.92rem; background: var(--card);
+    border: 1px solid var(--line);
+  }
+  caption {
+    caption-side: top; text-align: left; font-family: var(--mono);
+    font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); padding: 0 0 0.5rem 0.1rem;
+  }
+  th, td { padding: 0.5rem 0.9rem; text-align: left; border-bottom: 1px solid var(--line); color: var(--ink); }
+  thead th {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase; font-weight: 500; color: var(--muted); background: var(--ground);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { text-align: right; font-family: var(--mono); font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+  tr.hit td { background: var(--accent-soft); font-weight: 700; }
+  tr.hit td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+
+  /* ---------- pull quote ---------- */
+  blockquote {
+    margin: 1.7rem 0; padding: 0.2rem 0 0.2rem 1.3rem;
+    border-left: 3px solid var(--accent);
+    font-size: 1.18rem; line-height: 1.45; font-style: italic; color: var(--ink);
+    text-wrap: balance;
+  }
+
+  /* ---------- scoreboard ---------- */
+  .board { display: flex; flex-direction: column; gap: 0.9rem; margin: 1.35rem 0; }
+  .claim {
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 1.05rem 1.25rem;
+  }
+  .claim .top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+  .claim h3 { margin: 0; font-size: 1.02rem; color: var(--ink); }
+  .chip {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 0.22rem 0.6rem; border-radius: 999px; white-space: nowrap;
+  }
+  .chip.dead { color: var(--dead); background: var(--dead-soft); }
+  .chip.alive { color: var(--alive); background: var(--alive-soft); }
+  .claim p { font-size: 0.95rem; color: var(--muted); margin: 0; }
+  .claim p strong { color: var(--ink); }
+
+  /* ---------- references ---------- */
+  .refs { border-top: 1px solid var(--line); padding-top: 1.6rem; }
+  .refs h2 { font-size: 1.05rem; }
+  .refs ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.45rem; }
+  .refs li { font-size: 0.88rem; color: var(--muted); }
+  .refs .id { font-family: var(--mono); font-size: 0.78rem; }
+
+  footer { margin-top: 3rem; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+</style>
+
+<div class="page">
+  <nav class="nav">
+    <a class="brand" href="../../">Ayush Chaurasia</a>
+    <a class="item" href="../../">Home</a>
+    <a class="item" href="../" aria-current="page">Blog</a>
+    <a class="item" href="../../tutorials/">Tutorials &amp; Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">&#9680; theme</button>
+  </nav>
+  <header>
+    <div class="masthead">
+      <div class="eyebrow">Research notes · rope-clip</div>
+      <figure class="phases" aria-hidden="true">
+        <svg width="96" height="96" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="18"></circle>
+          <circle cx="60" cy="60" r="34"></circle>
+          <circle cx="60" cy="60" r="50"></circle>
+          <g class="spin1"><line x1="60" y1="60" x2="60" y2="42"></line></g>
+          <g class="spin2"><line x1="60" y1="60" x2="60" y2="26"></line></g>
+          <g class="spin3"><line x1="60" y1="60" x2="60" y2="10"></line></g>
+          <circle class="hub" cx="60" cy="60" r="2.5"></circle>
+        </svg>
+        <figcaption>&theta;<sub>j</sub> = b<sup>&minus;2j/d</sup></figcaption>
+      </figure>
+    </div>
+    <h1>A Little RoPE, a&nbsp;Lot of Prior&nbsp;Art</h1>
+    <p class="dek">Three weeks of controlled RoPE-for-CLIP experiments, one adversarial literature review, and the ICLR&nbsp;2025 paper that had already published my headline result.</p>
+    <div class="byline"><span>Ayush Chaurasia</span><span>July 2026</span><span>~15 min read</span></div>
+  </header>
+
+  <div class="tldr">
+    <span class="label">TL;DR</span>
+    <ul>
+      <li>2D RoPE gives a SigLIP ViT-B <strong>+2.5 ImageNet zero-shot</strong> and +4&ndash;5 retrieval R@5 at fixed data, compute, and parameters &mdash; <strong>+3.0 at ViT-L</strong>. Three seeds, clean isolation.</li>
+      <li>A RoPE text tower trained at 77 tokens holds long-caption retrieval <strong>flat at ~2&times; length</strong> using only an inference-time frequency rescaling. No retraining, no new parameters.</li>
+      <li>Then I ran an adversarial novelty review on my own paper. <strong>TULIP (ICLR&nbsp;2025)</strong> had already built a RoPE text tower for CLIP with NTK-aware scaling and beaten Long-CLIP. Two 2025 VLM tech reports had already paired 2D RoPE with the SigLIP loss. My theory section was a 2021 theorem.</li>
+      <li>What survived: <strong>the controlled measurement</strong> &mdash; nobody has the clean ablation, and one tech report&rsquo;s confounded numbers point the other way.</li>
+    </ul>
+  </div>
+
+  <section>
+    <h2>How a transformer knows where things are</h2>
+    <p>Attention is famously permutation-invariant. A transformer scores every pair of tokens using a query vector <var>q</var> and a key vector <var>k</var> &mdash; just a dot product, <var>q</var>&middot;<var>k</var>. Nothing in that dot product knows whether the two tokens are adjacent or fifty positions apart. Shuffle the sequence and, absent any positional signal, the model literally cannot tell.</p>
+    <p>The standard fix &mdash; inherited from the original Transformer and used by CLIP on <em>both</em> towers &mdash; is the <em>learned absolute position embedding</em>: a trainable table with one vector per position, added to each token at the input. Patch #37 of the image gets vector #37; token #12 of the caption gets vector #12. It works, but it carries two structural costs:</p>
+    <ul class="prose">
+      <li><strong>It&rsquo;s absolute.</strong> The model learns &ldquo;what tends to be at position 37,&rdquo; not &ldquo;how position 37 relates to position 36.&rdquo; Relationships between positions must be rediscovered, indirectly, from data.</li>
+      <li><strong>It&rsquo;s a fixed-size table.</strong> CLIP&rsquo;s text table has exactly 77 rows. Feed it token #78 and there is no row to look up &mdash; the model doesn&rsquo;t <em>degrade</em> past its trained length, it simply <em>cannot run</em>. The notorious 77-token cap on CLIP-style models is baked into a parameter&rsquo;s shape.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Rotation as position: what RoPE actually does</h2>
+    <p>Rotary Position Embedding (RoPE), introduced in RoFormer (2021), takes a completely different route. Instead of adding a position vector to the token, it <em>rotates</em> the query and key vectors by an angle proportional to their position, right before the dot product.</p>
+    <p>Take a head dimension <var>d</var> and pair the channels into <var>d</var>/2 two-dimensional planes. In each plane, a token at position <var>m</var> is rotated by the angle <var>m</var><var>&theta;</var>:</p>
+    <div class="math">
+      <var>R</var>(<var>m</var>) =
+      <span class="mtx">
+        <span>cos&thinsp;<var>m&theta;</var></span><span>&minus;sin&thinsp;<var>m&theta;</var></span>
+        <span>sin&thinsp;<var>m&theta;</var></span><span>cos&thinsp;<var>m&theta;</var></span>
+      </span>
+      <span class="note">one 2&times;2 rotation block per channel plane</span>
+    </div>
+    <p>The magic is a one-line identity. Rotations in a plane compose by adding angles, and transposing one reverses it &mdash; so <var>R</var>(<var>m</var>)<sup>&#8868;</sup><var>R</var>(<var>n</var>) = <var>R</var>(<var>n</var>&minus;<var>m</var>). When a query rotated by <var>m</var> meets a key rotated by <var>n</var>:</p>
+    <div class="math">
+      (<var>R</var>(<var>m</var>)<var>q</var>) &middot; (<var>R</var>(<var>n</var>)<var>k</var>) &nbsp;=&nbsp; <var>q</var> &middot; <var>R</var>(<var>n</var>&minus;<var>m</var>)&thinsp;<var>k</var>
+      <span class="note">the attention score sees only the offset n&minus;m</span>
+    </div>
+    <p>Absolute position vanishes from the computation. Two tokens three positions apart interact identically whether they sit at (0,&nbsp;3) or (500,&nbsp;503). And because rotations preserve lengths, the token&rsquo;s content is untouched &mdash; only its <em>phase</em> carries position.</p>
+    <p>One more ingredient: each plane spins at its own rate, <var>&theta;</var><sub>j</sub> = <var>b</var><sup>&minus;2j/d</sup> with base <var>b</var> = 10,000. Picture a clock with <var>d</var>/2 hands &mdash; that&rsquo;s what the spinning figure at the top of this page is. The fastest hands tick a full radian per token and resolve fine local order; the slowest take thousands of tokens per revolution and encode coarse, long-range structure. This frequency ladder is the detail that matters later, when the story reaches length extrapolation.</p>
+    <p>If you come from computer vision, there&rsquo;s a familiar analogy: this is attention&rsquo;s version of a convolution&rsquo;s translation equivariance. A 3&times;3 conv kernel responds to a pattern the same way wherever it appears, because it only ever sees relative offsets within its window. A learned absolute embedding breaks that property (patch #37 has its own private vector); RoPE restores a soft version of it inside attention.</p>
+  </section>
+
+  <section>
+    <h2>Two towers, one inductive bias</h2>
+    <p>Here&rsquo;s the observation that started this project. A text token has a 1D index <var>m</var>. An image patch has a 2D index (<var>p</var>,&nbsp;<var>q</var>) &mdash; row and column. How do you rotate by a <em>pair</em> of coordinates?</p>
+    <p>The standard answer &mdash; used by RoPE-ViT and EVA &mdash; is <em>axial</em>: split each head&rsquo;s channels in half and give each axis its own independent 1D RoPE. The first half rotates by the row index, the second half by the column index. As a matrix, position (<var>p</var>,&nbsp;<var>q</var>) applies the block-diagonal direct sum:</p>
+    <div class="math">
+      <var>R</var><sub>2D</sub>(<var>p</var>,&thinsp;<var>q</var>) =
+      <span class="mtx">
+        <span><var>R</var><sub>row</sub>(<var>p</var>)</span><span>0</span>
+        <span>0</span><span><var>R</var><sub>col</sub>(<var>q</var>)</span>
+      </span>
+      <span class="note">row rotation on one channel half, column rotation on the other</span>
+    </div>
+    <p>Because the two halves never mix in a dot product, the attention score decomposes into two independent copies of the 1D identity:</p>
+    <div class="math">
+      (<var>R</var><sub>2D</sub>(<var>p</var>,<var>q</var>)&thinsp;<var>q</var>) &middot; (<var>R</var><sub>2D</sub>(<var>p</var>&prime;,<var>q</var>&prime;)&thinsp;<var>k</var>) &nbsp;=&nbsp; <var>q</var><sub>row</sub> &middot; <var>R</var>(<var>p</var>&prime;&minus;<var>p</var>)&thinsp;<var>k</var><sub>row</sub> &nbsp;+&nbsp; <var>q</var><sub>col</sub> &middot; <var>R</var>(<var>q</var>&prime;&minus;<var>q</var>)&thinsp;<var>k</var><sub>col</sub>
+      <span class="note">the score sees only the 2D offset (&Delta;row, &Delta;col)</span>
+    </div>
+    <p>Vertical displacement lives in one set of channels, horizontal in the other. In code, the whole mechanism is ~15 lines applied to <var>q</var> and <var>k</var> inside every attention layer. Condensed from the <code>Rotary2D</code> module in my OpenCLIP fork:</p>
+<pre>
+<span class="kw">def</span> rotate_half(x):                    <span class="cm"># (x1, x2) -> (-x2, x1): a 90&deg; turn in each plane</span>
+    x1, x2 = x.chunk(2, dim=-1)
+    <span class="kw">return</span> torch.cat((-x2, x1), dim=-1)
+
+<span class="kw">class</span> Rotary2D(nn.Module):
+    <span class="kw">def</span> __init__(self, H, W, head_dim, base=10_000.0):
+        d_half   = head_dim // 2                                   <span class="cm"># channels per axis: [row | col]</span>
+        inv_freq = base ** (-torch.arange(0, d_half, 2) / d_half)  <span class="cm"># the frequency ladder &theta;_j</span>
+        rows = torch.arange(H).repeat_interleave(W).float()        <span class="cm"># each patch's grid coordinate;</span>
+        cols = torch.arange(W).repeat(H).float()                   <span class="cm"># CLS gets (0,0) -> identity rotation</span>
+        ang_r = torch.outer(rows, inv_freq)                        <span class="cm"># [L, d_half/2] angles per token</span>
+        ang_c = torch.outer(cols, inv_freq)
+        emb_r = torch.cat([ang_r, ang_r], dim=-1)                  <span class="cm"># NeoX layout, matches rotate_half</span>
+        emb_c = torch.cat([ang_c, ang_c], dim=-1)
+        self.cos_r, self.sin_r = emb_r.cos(), emb_r.sin()          <span class="cm"># cached: the patch grid never changes</span>
+        self.cos_c, self.sin_c = emb_c.cos(), emb_c.sin()
+
+    <span class="kw">def</span> forward(self, x):              <span class="cm"># x: [batch, heads, L, head_dim] &mdash; applied to q AND k</span>
+        x_r, x_c = x.chunk(2, dim=-1)
+        x_r = x_r * self.cos_r + rotate_half(x_r) * self.sin_r     <span class="cm"># rotate by ROW index</span>
+        x_c = x_c * self.cos_c + rotate_half(x_c) * self.sin_c     <span class="cm"># rotate by COL index</span>
+        <span class="kw">return</span> torch.cat([x_r, x_c], dim=-1)
+</pre>
+    <p>Two implementation notes. First, <code>rotate_half</code> is how every fast RoPE implementation avoids materializing rotation matrices: for a plane (<var>x</var><sub>1</sub>,&thinsp;<var>x</var><sub>2</sub>), the rotated vector (<var>x</var><sub>1</sub>cos&thinsp;<var>&theta;</var>&thinsp;&minus;&thinsp;<var>x</var><sub>2</sub>sin&thinsp;<var>&theta;</var>,&nbsp;<var>x</var><sub>2</sub>cos&thinsp;<var>&theta;</var>&thinsp;+&thinsp;<var>x</var><sub>1</sub>sin&thinsp;<var>&theta;</var>) is exactly <code>x*cos + rotate_half(x)*sin</code>, elementwise. Second, RoPE adds <strong>zero parameters</strong> &mdash; the cos/sin caches are pure functions of the grid and the base. Every accuracy delta in the tables below comes at strictly equal parameter count.</p>
+    <p>Now delete <code>rows</code>/<code>cols</code>, feed <code>torch.arange(seq_len)</code> as the only coordinate, and skip the channel split &mdash; this same module <em>is</em> 1D text RoPE. Spatial RoPE (images) and sequential RoPE (text) are literally one operation applied to different index sets. One inductive bias &mdash; <em>attention should see relative position, through rotation</em> &mdash; with two instantiations. That framing suggested two falsifiable predictions:</p>
+    <ul class="prose">
+      <li><strong>P1</strong> &mdash; 2D RoPE should improve a sigmoid-loss (SigLIP) image tower at fixed budget, with a larger gain on retrieval (which needs fine-grained spatial alignment) than on classification (which needs one global label).</li>
+      <li><strong>P2</strong> &mdash; a 1D RoPE text tower trained short should <em>extrapolate</em> to longer captions at inference. There is no 77-row table to run out of: position is computed, not looked up.</li>
+    </ul>
+    <p>RoPE was thoroughly studied for LLMs, established for supervised ViTs (RoPE-ViT, ECCV&nbsp;2024), and present-but-never-ablated inside EVA-CLIP&rsquo;s InfoNCE tower. Under SigLIP&rsquo;s sigmoid loss, I believed it was untested. Hold that thought.</p>
+  </section>
+
+  <section>
+    <h2><span class="when">June 17&ndash;20</span>The setup: a sigmoid loss and an ablation ladder</h2>
+    <p>A word on the loss, since it was the hinge of my novelty claim. Both objectives operate on the same raw material: normalized image embeddings <var>x</var><sub>i</sub> and text embeddings <var>y</var><sub>j</sub>, scored by similarity <var>x</var><sub>i</sub>&middot;<var>y</var><sub>j</sub> with a learned temperature <var>t</var>. CLIP trains with InfoNCE &mdash; for each image, a softmax over every text in the batch, &ldquo;pick your caption out of this lineup&rdquo;:</p>
+    <div class="math">
+      <var>L</var><sub>i</sub> = &minus;log&nbsp;[&thinsp;exp(<var>t</var>&thinsp;<var>x</var><sub>i</sub>&middot;<var>y</var><sub>i</sub>) &frasl; &Sigma;<sub>j</sub>&thinsp;exp(<var>t</var>&thinsp;<var>x</var><sub>i</sub>&middot;<var>y</var><sub>j</sub>)&thinsp;]
+      <span class="note">InfoNCE &mdash; normalized over the whole batch</span>
+    </div>
+    <p>The denominator couples every pair to every other pair in the batch, which is why CLIP&rsquo;s quality is famously sensitive to batch size. SigLIP (ICCV&nbsp;2023) replaces it with an independent binary decision per image&ndash;text pair &mdash; a sigmoid on the similarity, matched (<var>z</var><sub>ij</sub> = +1 on the diagonal) or not (&minus;1 off it), with a learned bias <var>b</var> and no batch-wide normalization:</p>
+    <div class="math">
+      <var>L</var> = &minus;(1&frasl;|B|)&thinsp;&Sigma;<sub>i</sub>&thinsp;&Sigma;<sub>j</sub>&thinsp;log&thinsp;&sigma;(&thinsp;<var>z</var><sub>ij</sub>&thinsp;(<var>t</var>&thinsp;<var>x</var><sub>i</sub>&middot;<var>y</var><sub>j</sub> + <var>b</var>)&thinsp;)
+      <span class="note">SigLIP &mdash; every pair judged alone</span>
+    </div>
+    <p>Same shared embedding space, different geometry of the training signal: InfoNCE only cares about each positive <em>relative to</em> the in-batch negatives, while the sigmoid pins every pair&rsquo;s similarity against an absolute threshold. There was no published evidence, I thought, on whether a positional inductive bias tuned under one loss transfers to the other.</p>
+    <p>I forked OpenCLIP and made one methodological bet early: every run is a row in an <em>additive ablation ladder</em>, declared in a single registry file, differing from its neighbor by exactly one ingredient. No ad-hoc command lines &mdash; a launcher turns registry rows into runs, and the diff between any two arms is auditable at a glance. When a stock config would have changed two things at once (the off-the-shelf SigLIP config also swaps the pooling head), I split it into separate rungs. It&rsquo;s slower than vibes-driven experimentation. It&rsquo;s also the only reason the paper&rsquo;s causal claims survived what came later.</p>
+    <p>Training: ViT-B/16, CC12M (~10M pairs), ~3 epochs, fixed global batch, H100s. The ladder: InfoNCE &rarr; SigLIP &rarr; +qk-norm &rarr; +2D&nbsp;RoPE &rarr; +attention pooling &rarr; +focal sigmoid. Three seeds on anything I planned to make a claim about. The RoPE rung jumped out immediately:</p>
+    <div class="tablewrap">
+      <table>
+        <caption>ViT-B/16 · CC12M · fixed budget · mean of 3 seeds</caption>
+        <thead><tr><th>Model</th><th class="num">IN-1k top-1</th><th class="num">COCO t&rarr;i R@5</th></tr></thead>
+        <tbody>
+          <tr><td>CLIP (InfoNCE)</td><td class="num">23.87</td><td class="num">36.19</td></tr>
+          <tr><td>SigLIP baseline</td><td class="num">24.13</td><td class="num">36.35</td></tr>
+          <tr class="hit"><td>+ 2D RoPE</td><td class="num">26.59</td><td class="num">40.06</td></tr>
+          <tr><td>+ 2D RoPE + qk-norm</td><td class="num">26.70</td><td class="num">40.31</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Because the ladder had stacked RoPE on top of qk-norm, I ran isolation arms &mdash; RoPE alone on plain SigLIP, three seeds &mdash; to be sure the win wasn&rsquo;t an interaction. It wasn&rsquo;t: adding qk-norm on top of RoPE moves ImageNet by 0.11 with per-seed noise up to 0.26. RoPE is the driver. A focal-weighted sigmoid variant <em>hurt</em> (kept as a reported negative). The retrieval gains (+4&ndash;5 R@5) exceeded the classification gains, matching P1&rsquo;s fine-grained-alignment prediction. And scaling to ViT-L/14 <em>widened</em> the gap: 25.42&nbsp;&rarr;&nbsp;28.45 (+3.0), RoPE sweeping every metric on every seed.</p>
+  </section>
+
+  <section>
+    <h2><span class="when">June 22 &ndash; July 4</span>The text side: extrapolation, a frequency trick, and a padding trap</h2>
+    <p>P2 asks a sharper question than &ldquo;does RoPE work in the text tower?&rdquo; It asks: can a model trained only on 77-token captions <em>read longer ones at inference</em>?</p>
+    <p>The two position codes fail in structurally different ways past the training length, and the difference is visible in one line of code each:</p>
+<pre>
+<span class="cm"># absolute: position is a LOOKUP &mdash; the table has exactly 77 rows</span>
+pos_emb = self.positional_embedding[:seq_len]        <span class="cm"># seq_len > 77 -> those rows don't exist</span>
+
+<span class="cm"># RoPE: position is COMPUTED &mdash; any seq_len works</span>
+angles = torch.arange(seq_len)[:, None] * inv_freq   <span class="cm"># [L, d/2], built on the fly</span>
+</pre>
+    <p>For the absolute baseline, the honest answer is that it can&rsquo;t even try &mdash; there is no row 78. The standard workaround (this is what Long-CLIP builds on) is to <em>interpolate</em> the table: stretch 77 learned vectors across, say, 164 slots via <code>F.interpolate</code>, so each position gets a blend of its trained neighbors. The positions now exist, but every token sits at coordinates the model never saw in training.</p>
+    <p>RoPE runs at any length, but naive extrapolation has its own failure mode, and it&rsquo;s worth understanding because the fix is the crux of the experiment. Each plane&rsquo;s phase at position <var>m</var> is <var>m</var><var>&theta;</var><sub>j</sub>. Train at <var>L</var>&thinsp;=&thinsp;77 and the model has only ever <em>seen</em> phases up to 77&thinsp;<var>&theta;</var><sub>j</sub> in each plane; evaluate at position 150 and the slow planes present phase angles that never occurred in training &mdash; out-of-distribution inputs, just hiding in the rotation space rather than the token space. The remedy, known in the LLM world as <strong>NTK-aware scaling</strong>, is a single arithmetic change at inference &mdash; replace the base <var>b</var> so every wavelength stretches by just enough:</p>
+<pre>
+<span class="cm"># NTK-aware rescaling: the entire "method". At inference, no retraining.</span>
+s        = L_test / L_train                           <span class="cm"># e.g. 164 / 77 &asymp; 2.13</span>
+eff_base = base * s ** (head_dim / (head_dim - 2))    <span class="cm"># 10_000 -> ~21_800 at s &asymp; 2.13</span>
+inv_freq = eff_base ** (-torch.arange(0, head_dim, 2) / head_dim)
+</pre>
+    <p>The exponent <var>d</var>/(<var>d</var>&minus;2) is chosen so the <em>maximum phase</em> reached at the longer test length matches the maximum phase seen in training: for every plane, <var>L</var><sub>test</sub>&thinsp;<var>&theta;</var>&prime;<sub>j</sub> stays within <var>L</var><sub>train</sub>&thinsp;<var>&theta;</var><sub>j</sub> at the slow end of the ladder, with the distortion spread geometrically across planes. Every rotation the model encounters at length 164 is one it has met at length 77 &mdash; the fast planes lose a little per-token resolution, and nothing else changes. No parameters, no gradient steps, three lines of code. This trick (community-discovered for LLaMA in mid-2023, formalized alongside YaRN) had, as far as I knew, never been tested on a contrastive text encoder.</p>
+    <p>My first experimental design failed in an instructive way. I trained at 248 tokens and &ldquo;extrapolated&rdquo; to 320 &mdash; then noticed the eval captions max out around 222 tokens. Past 248, the test set is 100% padding; a flat curve proves nothing. I threw the experiment away and redesigned: train both arms at 77 tokens (CLIP&rsquo;s real-world limit, where every long caption overflows), evaluate at 77/128/164/196/248 &mdash; with 164 &asymp; the p99 of real caption content on these benchmarks.</p>
+    <p>Both arms are the standard CLIP text tower, identical to the parameter (~149.7M) except the position code: learned-absolute with linear interpolation at eval time, versus 1D RoPE with the NTK rescaling applied at inference. Training on DenseFusion-1M (a million long, dense captions); evaluation on Urban-1k and DOCCI long-caption retrieval. The metric: &Delta;&thinsp;Recall@1 versus each arm&rsquo;s own 77-token score &mdash; does feeding the model <em>more of the caption</em> help or hurt?</p>
+    <div class="tablewrap">
+      <table>
+        <caption>Urban-1k t&rarr;i · &Delta;R@1 vs own 77-token baseline · mean of 3 seeds</caption>
+        <thead><tr><th>Method</th><th class="num">L=164</th><th class="num">L=248</th></tr></thead>
+        <tbody>
+          <tr><td>Absolute + interpolation</td><td class="num">&minus;4.8</td><td class="num">&minus;7.2</td></tr>
+          <tr><td>RoPE, NTK off</td><td class="num">&minus;4.5</td><td class="num">&minus;4.5</td></tr>
+          <tr class="hit"><td>RoPE, NTK on</td><td class="num">&minus;1.3</td><td class="num">&minus;0.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Two controls made me trust this table. First, the NTK-off ablation: raw RoPE extrapolation degrades about as badly as interpolation &mdash; so the win is not &ldquo;RoPE extrapolates,&rdquo; it&rsquo;s &ldquo;RoPE <em>plus the frequency rescaling</em> extrapolates.&rdquo; The decisive ingredient is the one-line base change. Second, a corruption control: replace every token past position 77 with padding, and RoPE+NTK craters from 17.9 to 7.7 R@1 &mdash; proof the flat curve reflects genuine use of the extra caption content, not a model quietly ignoring its tail.</p>
+  </section>
+
+  <section>
+    <h2><span class="when">June 25</span>The paper, and one proposition too many</h2>
+    <p>I wrote it up: <em>A Little RoPE Goes a Long Way</em>. Three claimed contributions &mdash; the two experiments above, plus a theory section I was rather pleased with. It went like this: every term in the sigmoid loss is a function of inner products <var>x</var><sub>i</sub>&middot;<var>y</var><sub>j</sub> of normalized embeddings, and inner products don&rsquo;t change if you rotate the entire embedding space by any orthogonal transform <var>Q</var>:</p>
+    <div class="math">
+      (<var>Q</var><var>x</var>)&middot;(<var>Q</var><var>y</var>) = <var>x</var><sup>&#8868;</sup><var>Q</var><sup>&#8868;</sup><var>Q</var><var>y</var> = <var>x</var>&middot;<var>y</var>
+      <span class="note">for any Q with Q&#8868;Q = I &mdash; applied jointly to both towers, the loss is bit-for-bit unchanged</span>
+    </div>
+    <p>So the loss constrains only the <em>relative</em> geometry of the space, never its absolute frame. RoPE, meanwhile, injects position through orthogonal rotations that preserve norms and encode only relative offsets. Loss and positional code agree about what is real (relative structure) and what is gauge (the absolute frame) &mdash; <em>that</em>, I argued, is the geometric reason rotation is the natural positional bias for contrastive training.</p>
+    <p>It&rsquo;s an elegant paragraph. Keep it in mind while the next section takes it apart.</p>
+  </section>
+
+  <section>
+    <h2><span class="when">July 9</span>The kill step</h2>
+    <p>Before submitting anywhere, I ran an adversarial novelty review &mdash; briefed explicitly to <em>kill</em> the claims, not confirm them: three parallel literature sweeps (RoPE-in-vision, long-context CLIP text, and the theory), each required to fetch primary sources and report per-claim verdicts naming the closest prior work.</p>
+    <p><span class="kicker">The theory died in minutes.</span> The orthogonal invariance of dot-product contrastive losses isn&rsquo;t just known &mdash; it&rsquo;s a <em>theorem</em>: Zimmermann et&nbsp;al. (ICML&nbsp;2021) proved that InfoNCE-family minimizers recover the true latents exactly <em>up to an orthogonal transform</em>; the gauge freedom I&rsquo;d &ldquo;observed&rdquo; is the load-bearing object of a four-year-old spotlight paper. The 1D/2D unification exists at least four times over (RoPE-ViT itself presents 2D RoPE as 1D-per-axis; LieRE, STRING, and ComRoPE each build general N-dimensional frameworks). And the review surfaced a logical gap I had papered over with prose: my proposition is about one <em>global</em> rotation applied to the <em>final</em> embeddings, while RoPE applies <em>position-dependent</em> rotations to <em>intermediate</em> queries and keys inside attention. The former implies nothing about the latter. My &ldquo;geometric reason&rdquo; was an analogy wearing a proposition&rsquo;s clothes.</p>
+    <p><span class="kicker">P1&rsquo;s framing was factually false &mdash; by six weeks.</span> Abstract-level searches for &ldquo;RoPE SigLIP&rdquo; return nothing, which is exactly why I believed the abstract I wrote. The pairing lives where abstract search can&rsquo;t see it: inside VLM tech reports. ByteDance&rsquo;s Seed1.5-VL (May&nbsp;2025) trains a 2D-RoPE ViT with the SigLIP loss. Kwai&rsquo;s Keye-VL (July&nbsp;2025) adds 2D RoPE to a SigLIP encoder, continues pretraining with the SigLIP loss, and even publishes a comparison table &mdash; in which RoPE <em>doesn&rsquo;t</em> beat the non-RoPE baseline at standard resolution. Meta&rsquo;s Perception Encoder had individually ablated 2D RoPE under softmax CLIP that April.</p>
+    <p><span class="kicker">Then TULIP.</span> The second sweep returned a paper I had never encountered: <em>TULIP: Token-length Upgraded CLIP</em> &mdash; Najdenkoska et&nbsp;al., arXiv October 2024, accepted at ICLR&nbsp;2025. Last year. Reading its method section was an out-of-body experience. It replaces CLIP&rsquo;s absolute text position embeddings with relative ones &mdash; &ldquo;we implement P<sub>g</sub>(i) as Rotary Positional encodings (RoPE).&rdquo; It uses NTK-aware scaled RoPE, for the same reason I did. It evaluates at 248 tokens against Long-CLIP, and wins. My P2, essentially, published before I ran my first experiment &mdash; with one real difference: TULIP&rsquo;s length expansion is a <em>trained</em> pipeline (a distillation stage, then a fine-tuning epoch on long captions), where mine is inference-time-only. And even the &ldquo;training-free NTK on a contrastive text encoder&rdquo; half exists: LongEmbed (EMNLP&nbsp;2024) demonstrated it on text-embedding retrieval models and explicitly advocated RoPE for future embedding models.</p>
+    <blockquote>My related-work section cited seven papers. The review surfaced five directly-adjacent works I hadn&rsquo;t cited at all &mdash; one peer-reviewed and published before the project&rsquo;s first commit.</blockquote>
+  </section>
+
+  <section>
+    <h2>The scoreboard</h2>
+    <div class="board">
+      <div class="claim">
+        <div class="top"><h3>C1 &mdash; rotation unification + invariance proof</h3><span class="chip dead">Died</span></div>
+        <p>Both halves published (Zimmermann 2021; RoPE-ViT / LieRE / STRING / ComRoPE), and the connective argument doesn&rsquo;t hold as stated. <strong>Demoted to background.</strong></p>
+      </div>
+      <div class="claim">
+        <div class="top"><h3>C2 &mdash; RoPE under the sigmoid loss</h3><span class="chip alive">Narrowly alive</span></div>
+        <p>Seed1.5-VL and Keye-VL got there first as confounded tech-report evidence. <strong>Nobody has the controlled, from-scratch, fixed-budget, seed-replicated isolation</strong> &mdash; and Keye-VL&rsquo;s confounded numbers point the other way, a live contradiction my experiment resolves.</p>
+      </div>
+      <div class="claim">
+        <div class="top"><h3>C3 &mdash; training-free long context via RoPE + NTK</h3><span class="chip alive">Narrowly alive</span></div>
+        <p>TULIP owns RoPE-text-tower + NTK + beats-Long-CLIP; LongEmbed owns training-free NTK for contrastive text. <strong>What&rsquo;s left is the intersection</strong>: zero-retraining extension in the multimodal tower, plus the NTK-off ablation and corruption control neither paper has.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What survived, and what I&rsquo;d do differently</h2>
+    <p>The experiments survived; the <em>claims</em> didn&rsquo;t. Every number above is real, replicated, and &mdash; as far as I can tell &mdash; the only controlled measurement of its kind. What died was the story I wrapped around them: &ldquo;first to combine RoPE with X.&rdquo; The durable framing is smaller and better: <em>careful science on known ingredients</em> &mdash; the first clean isolation of RoPE under the sigmoid loss (which resolves a contradiction sitting in the tech-report record), and evidence that in a CLIP text tower a one-line inference-time rescaling does what TULIP needed a training pipeline for.</p>
+    <ol class="prose">
+      <li><strong>Run the kill review before writing the abstract, not after.</strong> It cost one day and rewrote three contribution claims. The same review three weeks earlier would have shaped the experiments themselves &mdash; I&rsquo;d have run a TULIP-style fine-tuned arm as a baseline.</li>
+      <li><strong>Search where the field actually publishes.</strong> My hinge claim was falsified by two tech reports invisible to abstract-level search. If your claim is &ldquo;X has never been paired with Y,&rdquo; you have to grep the 80-page tech reports, not just Semantic Scholar.</li>
+      <li><strong>&ldquo;First to combine&rdquo; is fragile; &ldquo;first controlled measurement&rdquo; is durable.</strong> Combinations get published constantly, in passing, deep inside VLM reports. Nobody scoops a clean ablation by accident.</li>
+      <li><strong>The trash-can experiment was the most valuable one.</strong> Killing my own padding-contaminated v1 eval is why the v2 numbers held up under adversarial review. The habit that caught my flawed eval is the same habit that caught the novelty problem &mdash; it just needed to be pointed outward sooner.</li>
+    </ol>
+    <p>The paper is being reframed accordingly &mdash; honest venue target included. The full adversarial review, with per-claim verdicts and every citation, lives in <code>NOVELTY_REVIEW.md</code> in the repo.</p>
+  </section>
+
+  <section class="refs">
+    <h2>References</h2>
+    <ul>
+      <li>Su et al., <em>RoFormer: Enhanced Transformer with Rotary Position Embedding</em>, 2021. <span class="id">arXiv:2104.09864</span></li>
+      <li>Heo et al., <em>Rotary Position Embedding for Vision Transformer</em>, ECCV 2024. <span class="id">arXiv:2403.13298</span></li>
+      <li>Zhai et al., <em>Sigmoid Loss for Language Image Pre-Training</em> (SigLIP), ICCV 2023. <span class="id">arXiv:2303.15343</span></li>
+      <li>Najdenkoska et al., <em>TULIP: Token-length Upgraded CLIP</em>, ICLR 2025. <span class="id">arXiv:2410.10034</span></li>
+      <li>Zhu et al., <em>LongEmbed: Extending Embedding Models for Long Context Retrieval</em>, EMNLP 2024. <span class="id">arXiv:2404.12096</span></li>
+      <li>Zhang et al., <em>Long-CLIP: Unlocking the Long-Text Capability of CLIP</em>, ECCV 2024. <span class="id">arXiv:2403.15378</span></li>
+      <li>Zimmermann et al., <em>Contrastive Learning Inverts the Data Generating Process</em>, ICML 2021. <span class="id">arXiv:2102.08850</span></li>
+      <li>Bolya et al., <em>Perception Encoder</em>, 2025. <span class="id">arXiv:2504.13181</span></li>
+      <li>Seed1.5-VL Technical Report, 2025. <span class="id">arXiv:2505.07062</span> &nbsp;·&nbsp; Kwai Keye-VL Technical Report, 2025. <span class="id">arXiv:2507.01949</span></li>
+      <li>Peng et al., <em>YaRN: Efficient Context Window Extension of Large Language Models</em>, 2023. <span class="id">arXiv:2309.00071</span></li>
+    </ul>
+  </section>
+
+  <footer>rope-clip · notes written July 2026 · header motif: three RoPE frequency planes rotating at b<sup>&minus;2j/d</sup></footer>
+</div>
+
+<script src="../../assets/site.js"></script>
+</body>
+</html>

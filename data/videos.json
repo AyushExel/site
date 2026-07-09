@@ -1,0 +1,21 @@
+[
+  { "title": "Improving RAG by Reranking & Fine-Tuning — GenAI World talk", "url": "https://www.youtube.com/watch?v=jDxS6eKMX7Q", "tag": "talk · RAG" },
+  { "title": "Optimize RAG with Hybrid Search and Reranking", "url": "https://www.youtube.com/watch?v=kOALKZvhMgQ", "tag": "talk · RAG" },
+  { "title": "Multi-modal Image Search App with CLIP", "url": "https://www.youtube.com/watch?v=aaMsD7ucxZw", "tag": "vector db" },
+  { "title": "Build a Multi-modal Search Engine in 15 Minutes", "url": "https://www.youtube.com/watch?v=8gPqjRerlSk", "tag": "vector db" },
+  { "title": "LLMs, RAGs & AI-native Databases — Where We're At", "url": "https://www.youtube.com/watch?v=3xVVAqLxkRo", "tag": "vector db" },
+  { "title": "VectorDB Recipes: Stay Up to Date with GenAI in One Place", "url": "https://www.youtube.com/watch?v=2Z9rbnhF8yQ", "tag": "vector db" },
+  { "title": "YOLOExplorer: SQL, Pandas and Vector Search for CV Datasets", "url": "https://www.youtube.com/watch?v=SDhYrxhQdJg", "tag": "computer vision" },
+  { "title": "Ultralytics Framework & YOLOv8 Deep Dive", "url": "https://www.youtube.com/watch?v=hUH3GycQL5I", "tag": "YOLO" },
+  { "title": "RT-DETR: Vision Transformers Are Now Real-Time", "url": "https://www.youtube.com/watch?v=_0BqUpIgg4w", "tag": "YOLO" },
+  { "title": "Convert Detection Data to Segmentation with YOLO + SAM", "url": "https://www.youtube.com/watch?v=xcFN55DZoiI", "tag": "YOLO" },
+  { "title": "Introducing the YOLOv5 Classifier", "url": "https://www.youtube.com/watch?v=TyLmf9JQSK8", "tag": "YOLO" },
+  { "title": "YOLOv5: Learn the Simplest Object Detection Library", "url": "https://www.youtube.com/watch?v=xL8Cd9bVQnk", "tag": "YOLO" },
+  { "title": "Resume Training on Any Device — YOLOv5 Fault Tolerance", "url": "https://www.youtube.com/watch?v=nb4IBPHgDpM", "tag": "YOLO" },
+  { "title": "Transformers from Scratch: First Principles", "url": "https://www.youtube.com/watch?v=r5b6gJF9BAQ", "tag": "deep learning" },
+  { "title": "Hiding Images in Plain Sight: Deep Steganography", "url": "https://www.youtube.com/watch?v=8Rcr7_Khldk", "tag": "deep learning" },
+  { "title": "Hydra: Manage ML Configurations Without Going Insane", "url": "https://www.youtube.com/watch?v=TD6_k0sfgHk", "tag": "ML engineering" },
+  { "title": "Decouple Research from Engineering Code with PyTorch Lightning", "url": "https://www.youtube.com/watch?v=FuaTu2cdu4w", "tag": "ML engineering" },
+  { "title": "Comparing State-of-the-Art Hyperparameter Optimization Methods", "url": "https://www.youtube.com/watch?v=I0gwGjl0Xes", "tag": "ML engineering" },
+  { "title": "DeepSORT: Track Objects in Videos", "url": "https://www.youtube.com/watch?v=_Ad0G4ACJH8", "tag": "computer vision" }
+]

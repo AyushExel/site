@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tutorials &amp; Videos · Ayush Chaurasia</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="brand" href="../">Ayush Chaurasia</a>
+    <a class="item" href="../">Home</a>
+    <a class="item" href="../blog/">Blog</a>
+    <a class="item" href="./" aria-current="page">Tutorials &amp; Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐ theme</button>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Teaching</span>
+    <h1>Tutorials &amp; Videos</h1>
+    <p class="dek">Talks, walkthroughs, and tutorials — mostly on vector databases, retrieval,
+    and computer vision. Full channel on
+    <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>.</p>
+  </header>
+
+  <section>
+    <div id="videos-mount"><p class="small-mono">Loading…</p></div>
+  </section>
+
+  <footer class="site">
+    <span>© <span id="y"></span> Ayush Chaurasia</span>
+    <span><a href="https://github.com/AyushExel/site">Source on GitHub</a></span>
+  </footer>
+
+</div>
+<script src="../assets/site.js"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+  renderVideos("videos-mount", "../data/videos.json");
+</script>
+</body>
+</html>

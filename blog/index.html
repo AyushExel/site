@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog · Ayush Chaurasia</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="brand" href="../">Ayush Chaurasia</a>
+    <a class="item" href="../">Home</a>
+    <a class="item" href="./" aria-current="page">Blog</a>
+    <a class="item" href="../tutorials/">Tutorials &amp; Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐ theme</button>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Writing</span>
+    <h1>Blog</h1>
+    <p class="dek">Research notes, postmortems, and long-form explanations — mostly ML systems,
+    computer vision, and the occasional hard-won lesson.</p>
+  </header>
+
+  <section>
+    <div class="stack">
+      <div class="card post">
+        <span class="date">July 2026 · ~18 min</span>
+        <h3><a href="rope-prior-art/">A Little RoPE, a Lot of Prior Art</a></h3>
+        <p>Three weeks of controlled RoPE-for-CLIP experiments, one adversarial literature
+        review, and the ICLR 2025 paper that had already published my headline result.
+        Includes a full primer on rotary position embeddings, the SigLIP loss, and
+        NTK-aware length extrapolation.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">
+    <span>© <span id="y"></span> Ayush Chaurasia</span>
+    <span><a href="https://github.com/AyushExel/site">Source on GitHub</a></span>
+  </footer>
+
+</div>
+<script src="../assets/site.js"></script>
+<script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+</body>
+</html>

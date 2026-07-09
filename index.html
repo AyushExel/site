@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayush Chaurasia</title>
   <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
-  <link rel="stylesheet" href="assets/style.css?v=4">
+  <link rel="stylesheet" href="assets/style.css?v=5">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
 </head>
 <body>
@@ -40,7 +40,6 @@
       <a id="scholar-link" href="https://scholar.google.com/citations?user=4XbcwOAAAAAJ">Scholar</a>
       <a href="mailto:ayush@lancedb.com">Email</a>
     </div>
-    <div class="statbar" id="stats-mount" aria-label="Highlights"></div>
   </header>
 
   <div class="cols">
@@ -65,12 +64,15 @@
     <div>
       <section id="committer-to">
         <div class="sechead"><span class="eyebrow">Committer to</span><h2>Contributions</h2></div>
+        <p class="lead" id="committer-lead"></p>
         <div id="committer-mount" class="card repo-list"></div>
       </section>
 
       <section id="scholar">
         <div class="sechead"><span class="eyebrow">Research</span><h2>Publications</h2></div>
+        <p class="lead" id="scholar-lead"></p>
         <div id="pubs-mount" class="stack"></div>
+        <p class="small-mono" id="scholar-foot" style="margin-top:0.7rem"></p>
       </section>
     </div>
   </div>
@@ -81,7 +83,7 @@
   </footer>
 
 </div>
-<script src="assets/site.js?v=4"></script>
+<script src="assets/site.js?v=5"></script>
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
@@ -92,20 +94,7 @@
       fetch("data/cocreated.json").then(r => r.json()).catch(() => []),
     ]);
 
-    // --- hero stat bar (highlights, all data-driven) ---
     repos.sort((a, b) => b.stars - a.stars);
-    const totalStars = repos.reduce((s, r) => s + r.stars, 0);
-    const totalPRs = repos.reduce((s, r) => s + r.prs, 0);
-    const tiles = [
-      [scholar ? scholar.citations : null, "citations", scholar && scholar.profile_url],
-      [totalStars, "combined ★ · repos contributed to", "#committer-to"],
-      [totalPRs, "merged pull requests", "https://github.com/search?q=author%3AAyushExel+is%3Amerged&type=pullrequests"],
-      [repos.length, "repos committed to", "#committer-to"],
-    ];
-    document.getElementById("stats-mount").innerHTML = tiles
-      .filter(([n]) => n != null)
-      .map(([n, k, href]) => `<div class="cell"><div class="n">${href ? `<a href="${href}">` : ""}${fmt(n)}${href ? "</a>" : ""}</div><span class="k">${k}</span></div>`)
-      .join("");
     if (scholar && scholar.profile_url) document.getElementById("scholar-link").href = scholar.profile_url;
 
     // --- co-created cards ---
@@ -120,11 +109,19 @@
         ${p.paper ? `<a class="paper" href="${p.paper.url}">📄 ${p.paper.label}</a>` : ""}
       </div>`).join("");
 
-    // --- committer-to: dense rows, top 8 visible, rest collapsed ---
+    // --- committer-to: one-liner summary, then popular repos with value blurbs ---
+    const totalPRs = repos.reduce((s, r) => s + r.prs, 0);
+    const big = repos.filter(r => r.stars >= 5000).length;
+    document.getElementById("committer-lead").innerHTML =
+      `${totalPRs}+ merged PRs across ${repos.length} open-source repositories — ` +
+      `${big} of them with over 5k stars. Some popular ones:`;
     const row = r => `
       <div class="row">
-        <span class="name"><a href="${r.url}" title="${(r.desc || "").replace(/"/g, "&quot;")}">${r.repo}</a></span>
-        <span class="stats"><span class="stars">★ ${fmt(r.stars)}</span> · ${r.prs} PR${r.prs > 1 ? "s" : ""}</span>
+        <div class="line1">
+          <span class="name"><a href="${r.url}" title="${(r.desc || "").replace(/"/g, "&quot;")}">${r.repo}</a></span>
+          <span class="stats"><span class="stars">★ ${fmt(r.stars)}</span></span>
+        </div>
+        <div class="contrib">${r.contrib || r.prs + " merged PR" + (r.prs > 1 ? "s" : "")}</div>
       </div>`;
     const VISIBLE = 8;
     document.getElementById("committer-mount").innerHTML =
@@ -133,13 +130,17 @@
         ? `<details class="more"><summary>${repos.length - VISIBLE} more</summary>${repos.slice(VISIBLE).map(row).join("")}</details>`
         : "");
 
-    // --- publications ---
+    // --- publications (numbers read from the Scholar profile; see date note) ---
     if (scholar && scholar.publications) {
+      document.getElementById("scholar-lead").innerHTML =
+        `<strong>${fmt(scholar.citations)}</strong> citations · h-index <strong>${scholar.h_index}</strong> · i10-index <strong>${scholar.i10_index}</strong>`;
       document.getElementById("pubs-mount").innerHTML = scholar.publications.map(p => `
         <div class="card pub">
           <span class="title"><a href="${p.url}">${p.title}</a><br><span class="venue">${p.venue || ""}${p.year ? " · " + p.year : ""}</span></span>
           ${p.citations != null ? `<span class="cites">${fmt(p.citations)}&nbsp;cites</span>` : ""}
         </div>`).join("");
+      document.getElementById("scholar-foot").innerHTML =
+        `As read from <a href="${scholar.profile_url}">Google Scholar</a> on ${scholar.updated} — see the live profile for current numbers.`;
     }
   })();
 </script>

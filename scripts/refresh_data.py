@@ -45,6 +45,9 @@ def main():
         time.sleep(3 if TOKEN else 8)  # search rate limit
 
     # 2) star counts for external repos (own repos belong in "co-created", not here)
+    # preserve hand-written "contrib" blurbs across refreshes
+    path = ROOT / "data" / "committer_to.json"
+    old = {r["repo"]: r for r in json.loads(path.read_text())} if path.exists() else {}
     out = []
     external = [r for r in counts if not r.startswith(f"{USER}/")]
     for full in sorted(external, key=counts.get, reverse=True):
@@ -53,20 +56,20 @@ def main():
         except Exception as e:  # repo renamed/deleted — skip
             print(f"skip {full}: {e}")
             continue
-        out.append(
-            {
-                "repo": full,
-                "stars": d["stargazers_count"],
-                "desc": (d["description"] or "")[:140],
-                "lang": d.get("language"),
-                "prs": counts[full],
-                "url": d["html_url"],
-            }
-        )
+        entry = {
+            "repo": full,
+            "stars": d["stargazers_count"],
+            "desc": (d["description"] or "")[:140],
+            "lang": d.get("language"),
+            "prs": counts[full],
+            "url": d["html_url"],
+        }
+        if full in old and old[full].get("contrib"):
+            entry["contrib"] = old[full]["contrib"]
+        out.append(entry)
         time.sleep(0.2 if TOKEN else 1)
 
     out.sort(key=lambda x: -x["stars"])
-    path = ROOT / "data" / "committer_to.json"
     path.write_text(json.dumps(out, indent=1) + "\n")
     print(f"wrote {path} ({len(out)} repos, {sum(counts.values())} merged PRs, {date.today()})")
 

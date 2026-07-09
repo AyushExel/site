@@ -5,7 +5,8 @@
   "desc": "\ud83e\udd17 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, f",
   "lang": "Python",
   "prs": 1,
-  "url": "https://github.com/huggingface/transformers"
+  "url": "https://github.com/huggingface/transformers",
+  "contrib": "Added the W&B backend for hyperparameter sweeps"
  },
  {
   "repo": "microsoft/autogen",
@@ -13,7 +14,8 @@
   "desc": "A programming framework for agentic AI",
   "lang": "Python",
   "prs": 1,
-  "url": "https://github.com/microsoft/autogen"
+  "url": "https://github.com/microsoft/autogen",
+  "contrib": "New Retriever API"
  },
  {
   "repo": "ultralytics/ultralytics",
@@ -21,7 +23,8 @@
   "desc": "Ultralytics YOLO26, YOLO11, YOLOv8 \u2014 object detection, instance segmentation, semantic segmentation, image classification, pose estimation, ",
   "lang": "Python",
   "prs": 130,
-  "url": "https://github.com/ultralytics/ultralytics"
+  "url": "https://github.com/ultralytics/ultralytics",
+  "contrib": "Dataset Explorer \u2014 semantic + SQL search over CV datasets; framework core & docs"
  },
  {
   "repo": "ultralytics/yolov5",
@@ -29,7 +32,8 @@
   "desc": "Ultralytics YOLOv5 in PyTorch > ONNX > CoreML > TFLite",
   "lang": "Python",
   "prs": 65,
-  "url": "https://github.com/ultralytics/yolov5"
+  "url": "https://github.com/ultralytics/yolov5",
+  "contrib": "Classification & segmentation support, loggers refactor, experiment tracking"
  },
  {
   "repo": "run-llama/llama_index",
@@ -37,7 +41,8 @@
   "desc": "LlamaIndex is the leading document agent and OCR platform",
   "lang": "Python",
   "prs": 1,
-  "url": "https://github.com/run-llama/llama_index"
+  "url": "https://github.com/run-llama/llama_index",
+  "contrib": "LanceDB vector-store integration"
  },
  {
   "repo": "coqui-ai/TTS",
@@ -53,7 +58,8 @@
   "desc": "Build, run, and manage agent platforms.",
   "lang": "Python",
   "prs": 1,
-  "url": "https://github.com/agno-agi/agno"
+  "url": "https://github.com/agno-agi/agno",
+  "contrib": "Hybrid search + reranking in the LanceDB vectorstore"
  },
  {
   "repo": "explosion/spaCy",
@@ -69,7 +75,8 @@
   "desc": "Image-to-Image Translation in PyTorch",
   "lang": "Python",
   "prs": 2,
-  "url": "https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix"
+  "url": "https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix",
+  "contrib": "W&B experiment logging"
  },
  {
   "repo": "letta-ai/letta",
@@ -77,7 +84,8 @@
   "desc": "Platform for stateful agents: AI with advanced memory that can learn and self-improve over time.",
   "lang": "Python",
   "prs": 1,
-  "url": "https://github.com/letta-ai/letta"
+  "url": "https://github.com/letta-ai/letta",
+  "contrib": "LanceDB integration fixes & improvements"
  },
  {
   "repo": "EthicalML/awesome-production-machine-learning",
@@ -93,7 +101,8 @@
   "desc": "The agent engineering platform",
   "lang": "TypeScript",
   "prs": 1,
-  "url": "https://github.com/langchain-ai/langchainjs"
+  "url": "https://github.com/langchain-ai/langchainjs",
+  "contrib": "LanceDB integration improvements"
  },
  {
   "repo": "wandb/wandb",
@@ -101,7 +110,8 @@
   "desc": "The AI developer platform. Use Weights & Biases to train and fine-tune models, and manage models from experimentation to production.",
   "lang": "Python",
   "prs": 4,
-  "url": "https://github.com/wandb/wandb"
+  "url": "https://github.com/wandb/wandb",
+  "contrib": "Sacred integration; login-timeout support"
  },
  {
   "repo": "voxel51/fiftyone",
@@ -109,7 +119,8 @@
   "desc": "Refine high-quality datasets and visual AI models",
   "lang": "TypeScript",
   "prs": 1,
-  "url": "https://github.com/voxel51/fiftyone"
+  "url": "https://github.com/voxel51/fiftyone",
+  "contrib": "LanceDB integration docs"
  },
  {
   "repo": "thu-ml/tianshou",
@@ -117,7 +128,8 @@
   "desc": "An elegant PyTorch deep reinforcement learning library.",
   "lang": "Python",
   "prs": 2,
-  "url": "https://github.com/thu-ml/tianshou"
+  "url": "https://github.com/thu-ml/tianshou",
+  "contrib": "W&B artifacts support + docs"
  },
  {
   "repo": "lancedb/lancedb",
@@ -125,7 +137,8 @@
   "desc": "Developer-friendly OSS embedded retrieval library for multimodal AI. Search More; Manage Less.",
   "lang": "HTML",
   "prs": 95,
-  "url": "https://github.com/lancedb/lancedb"
+  "url": "https://github.com/lancedb/lancedb",
+  "contrib": "Rerankers, hybrid search, multivector/ColPali support, docs platform"
  },
  {
   "repo": "espnet/espnet",
@@ -157,7 +170,8 @@
   "desc": "Accelerated deep learning R&D",
   "lang": "Python",
   "prs": 2,
-  "url": "https://github.com/catalyst-team/catalyst"
+  "url": "https://github.com/catalyst-team/catalyst",
+  "contrib": "WandbLogger + artifacts support"
  },
  {
   "repo": "hegelai/prompttools",
@@ -165,7 +179,8 @@
   "desc": "Open-source tools for prompt testing and experimentation, with support for both LLMs (e.g. OpenAI, LLaMA) and vector databases (e.g. Chroma,",
   "lang": "Python",
   "prs": 2,
-  "url": "https://github.com/hegelai/prompttools"
+  "url": "https://github.com/hegelai/prompttools",
+  "contrib": "LanceDB integration"
  },
  {
   "repo": "galilai-group/stable-worldmodel",
@@ -173,7 +188,8 @@
   "desc": "A platform for reproducible world model research and evaluation",
   "lang": "Python",
   "prs": 7,
-  "url": "https://github.com/galilai-group/stable-worldmodel"
+  "url": "https://github.com/galilai-group/stable-worldmodel",
+  "contrib": "Lance video data layer, streaming writers, dataloader benchmarks"
  },
  {
   "repo": "Forethought-Technologies/AutoChain",
@@ -197,7 +213,8 @@
   "desc": "Tool for generating high quality Synthetic datasets",
   "lang": "Python",
   "prs": 1,
-  "url": "https://github.com/meta-llama/synthetic-data-kit"
+  "url": "https://github.com/meta-llama/synthetic-data-kit",
+  "contrib": "Multimodal-QA support"
  },
  {
   "repo": "wandb/examples",
@@ -205,7 +222,8 @@
   "desc": "Example deep learning projects that use wandb's features.",
   "lang": "Jupyter Notebook",
   "prs": 4,
-  "url": "https://github.com/wandb/examples"
+  "url": "https://github.com/wandb/examples",
+  "contrib": "Integration examples"
  },
  {
   "repo": "lancedb/vectordb-recipes",
@@ -221,7 +239,8 @@
   "desc": "Reliable, minimal and scalable library for pretraining foundation and world models",
   "lang": "Python",
   "prs": 3,
-  "url": "https://github.com/galilai-group/stable-pretraining"
+  "url": "https://github.com/galilai-group/stable-pretraining",
+  "contrib": "Lance data-layer support"
  },
  {
   "repo": "lancedb/yoloexplorer",

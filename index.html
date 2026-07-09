@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayush Chaurasia</title>
   <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
-  <link rel="stylesheet" href="assets/style.css?v=7">
+  <link rel="stylesheet" href="assets/style.css?v=8">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
 </head>
 <body>
@@ -30,7 +30,6 @@
   <header class="hero">
     <span class="eyebrow">Open-source ML engineering &amp; research</span>
     <h1>Ayush Chaurasia</h1>
-    <p class="dek">ML infrastructure and computer vision, built in the open.</p>
     <p class="bio">I'm currently at <a href="https://lancedb.com">LanceDB</a>, building the
     multimodal lakehouse — the data infrastructure behind search, retrieval, and training for
     AI systems. Before that I led AI at <a href="https://ultralytics.com">Ultralytics</a>,
@@ -69,17 +68,17 @@
     </div>
 
     <div>
-      <section id="committer-to">
-        <div class="sechead"><span class="eyebrow">Committer to</span><h2>Contributions</h2></div>
-        <p class="lead" id="committer-lead"></p>
-        <div id="committer-mount" class="card repo-list"></div>
-      </section>
-
       <section id="scholar">
         <div class="sechead"><span class="eyebrow">Research</span><h2>Publications</h2></div>
         <p class="lead" id="scholar-lead"></p>
         <div id="pubs-mount" class="stack"></div>
         <p class="small-mono" id="scholar-foot" style="margin-top:0.7rem"></p>
+      </section>
+
+      <section id="committer-to">
+        <div class="sechead"><span class="eyebrow">Committer to</span><h2>Contributions</h2></div>
+        <p class="lead" id="committer-lead"></p>
+        <div id="committer-mount" class="card repo-list"></div>
       </section>
     </div>
   </div>
@@ -90,15 +89,15 @@
   </footer>
 
 </div>
-<script src="assets/site.js?v=7"></script>
+<script src="assets/site.js?v=8"></script>
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
   (async () => {
     const [repos, scholar, cocreated] = await Promise.all([
-      fetch("data/committer_to.json?v=7").then(r => r.json()).catch(() => []),
-      fetch("data/scholar.json?v=7").then(r => r.json()).catch(() => null),
-      fetch("data/cocreated.json?v=7").then(r => r.json()).catch(() => []),
+      fetch("data/committer_to.json?v=8").then(r => r.json()).catch(() => []),
+      fetch("data/scholar.json?v=8").then(r => r.json()).catch(() => null),
+      fetch("data/cocreated.json?v=8").then(r => r.json()).catch(() => []),
     ]);
 
     repos.sort((a, b) => b.stars - a.stars);

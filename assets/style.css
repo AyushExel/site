@@ -189,6 +189,77 @@ details.more .stack { margin-top: 0.9rem; }
   padding: 0.16rem 0.55rem; white-space: nowrap; margin-left: auto;
 }
 
+/* ---------- landing (wide, grid-first) ---------- */
+.page-wide { max-width: 71rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.page-wide section { margin-bottom: 2.4rem; }
+.page-wide h2 { font-size: 1.18rem; margin-bottom: 0.85rem; }
+.page-wide section > .eyebrow { margin-bottom: 0.25rem; font-size: 0.68rem; }
+
+.hero-grid {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 2.5rem; align-items: center; margin-bottom: 2.8rem;
+}
+.hero-grid h1 { font-size: clamp(2rem, 4.5vw, 2.7rem); }
+.hero-grid .dek { font-size: 1.06rem; }
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+.stat-grid .stat { padding: 0.9rem 1.1rem; }
+.stat-grid .n { font-size: 1.75rem; }
+.stat-grid .n a { text-decoration: none; }
+
+.cols {
+  display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 2.4rem; align-items: start;
+}
+.proj-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+.proj-grid .project { padding: 0.9rem 1.05rem; }
+.proj-grid .project p {
+  font-size: 0.88rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+
+/* compact repo list: dense rows inside one card */
+.repo-list { padding: 0.25rem 1.1rem; }
+.repo-list .row {
+  display: flex; align-items: baseline; gap: 0.8rem;
+  padding: 0.52rem 0; border-bottom: 1px solid var(--line);
+}
+.repo-list .row:last-child, .repo-list details .row:last-child { border-bottom: none; }
+.repo-list .row .name {
+  font-family: var(--mono); font-size: 0.82rem; font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+}
+.repo-list .row .name a { text-decoration: none; }
+.repo-list .row .name a:hover { text-decoration: underline; }
+.repo-list .row .stats {
+  font-family: var(--mono); font-size: 0.74rem; color: var(--muted);
+  margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.repo-list .row .stats .stars { color: var(--accent-ink); }
+.repo-list details.more { margin: 0.35rem 0 0.6rem; }
+
+/* nav brand mark: the rotating phase planes, small */
+.brandmark { flex: none; align-self: center; }
+.brandmark svg { display: block; }
+.brandmark circle { fill: none; stroke: var(--line); stroke-dasharray: 2 3; }
+.brandmark line { stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; }
+.bm1, .bm2 { transform-origin: 14px 14px; }
+.bm1 { animation: rot 9s linear infinite; }
+.bm2 { animation: rot 27s linear infinite; }
+@keyframes rot { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .bm1, .bm2 { animation: none; }
+  .bm1 { transform: rotate(64deg); } .bm2 { transform: rotate(200deg); }
+}
+
+@media (max-width: 56rem) {
+  .hero-grid { grid-template-columns: 1fr; gap: 1.6rem; }
+  .cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 40rem) {
+  .proj-grid, .grid-2 { grid-template-columns: 1fr; }
+}
+
 /* ---------- footer ---------- */
 footer.site {
   margin-top: 3.5rem; padding-top: 1.4rem; border-top: 1px solid var(--line);

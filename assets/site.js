@@ -90,7 +90,7 @@ async function renderVideos(mountId, dataUrl) {
     mount.innerHTML = "";
     return;
   }
-  mount.innerHTML = `<div class="stack">${vids
+  mount.innerHTML = `<div class="grid-2">${vids
     .map(
       (v) => `
     <div class="card video">

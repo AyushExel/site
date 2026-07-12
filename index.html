@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayush Chaurasia</title>
   <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
-  <link rel="stylesheet" href="assets/style.css?v=9">
+  <link rel="stylesheet" href="assets/style.css?v=10">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
 </head>
 <body>
@@ -30,15 +30,16 @@
   <header class="hero">
     <span class="eyebrow">Open-source ML engineering &amp; research</span>
     <h1>Ayush Chaurasia</h1>
-    <p class="bio">I'm currently at <a href="https://lancedb.com">LanceDB</a>, building the
-    multimodal lakehouse — the data infrastructure behind search, retrieval, and training for
-    AI systems. Before that I led AI at <a href="https://ultralytics.com">Ultralytics</a>,
-    where I co-authored YOLOv8 and the Ultralytics framework, and led open-source integrations
-    and partnerships at <a href="https://wandb.ai">Weights&nbsp;&amp;&nbsp;Biases</a> — bringing
-    experiment tracking to many of the ecosystem's most-used ML libraries, from YOLOv5 and
-    Hugging&nbsp;Face Transformers to Catalyst and Tianshou. On the side I do encoder research
-    (see the <a href="blog/">blog</a>) and teach ML on
-    <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>.</p>
+    <p class="bio">Interested in technology, engineering, philosophy, and music.</p>
+    <p class="bio">Professionally, I've done a bunch of different things in the dev-tools
+    space, serving ML/AI research engineers. I currently work on
+    <a href="https://lancedb.com">LanceDB</a>. Before that I led the ML team at Ultralytics,
+    where I co-authored YOLOv8 and the
+    <a href="https://github.com/ultralytics/ultralytics">ultralytics</a> Python package, and
+    <a href="https://github.com/ultralytics/yolov5/releases/tag/v7.0">YOLOv5-seg</a> — the
+    world's first instance-segmentation model to run in real time on CPU. Before that, I led
+    open-source integrations and partnerships with ML tools at
+    <a href="https://wandb.ai">Weights&nbsp;&amp;&nbsp;Biases</a>, among other things.</p>
     <div class="links">
       <a href="https://github.com/AyushExel">GitHub</a>
       <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>
@@ -89,15 +90,15 @@
   </footer>
 
 </div>
-<script src="assets/site.js?v=9"></script>
+<script src="assets/site.js?v=10"></script>
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
   (async () => {
     const [repos, scholar, cocreated] = await Promise.all([
-      fetch("data/committer_to.json?v=9").then(r => r.json()).catch(() => []),
-      fetch("data/scholar.json?v=9").then(r => r.json()).catch(() => null),
-      fetch("data/cocreated.json?v=9").then(r => r.json()).catch(() => []),
+      fetch("data/committer_to.json?v=10").then(r => r.json()).catch(() => []),
+      fetch("data/scholar.json?v=10").then(r => r.json()).catch(() => null),
+      fetch("data/cocreated.json?v=10").then(r => r.json()).catch(() => []),
     ]);
 
     repos.sort((a, b) => b.stars - a.stars);

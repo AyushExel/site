@@ -324,3 +324,6 @@ footer.site a { color: var(--muted); }
   padding: 0.16rem 0.55rem; white-space: nowrap; margin-left: auto;
 }
 .vidcard .playbtn span { position: relative; }
+
+/* stacked bio paragraphs */
+.hero .bio + .bio { margin-top: 0.55rem; }

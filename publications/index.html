@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publications · Ayush Chaurasia</title>
+  <meta name="description" content="Papers, blog posts, and talks.">
+  <link rel="stylesheet" href="../assets/style.css?v=11">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='6.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><circle cx='14' cy='14' r='11.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><line x1='14' y1='14' x2='19.5' y2='10.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><line x1='14' y1='14' x2='10' y2='4.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><circle cx='14' cy='14' r='1.6' fill='%232b50d8'/></svg>">
+</head>
+<body>
+<div class="page-wide">
+
+  <nav class="nav">
+    <a class="brand" href="../">Ayush Chaurasia</a>
+    <a class="item" href="../">Home</a>
+    <a class="item" href="../oss/">Open Source</a>
+    <a class="item" href="./" aria-current="page">Publications</a>
+    <a class="item" href="../blog/">Blog</a>
+    <a class="item" href="../tutorials/">Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐</button>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Publications</span>
+    <h1>Papers, writing &amp; talks</h1>
+  </header>
+
+  <div class="cols">
+    <div>
+      <section id="papers">
+        <div class="sechead"><span class="eyebrow">Papers</span><h2>Research</h2></div>
+        <p class="lead" id="scholar-lead"></p>
+        <div id="pubs-mount" class="stack"></div>
+        <p class="small-mono" id="scholar-foot" style="margin-top:0.7rem"></p>
+      </section>
+
+      <section id="in-progress">
+        <div class="sechead"><span class="eyebrow">In progress</span><h2>Working on</h2></div>
+        <div class="card post">
+          <div class="postline">
+            <span class="date">July 2026</span>
+            <span class="pill">preprint coming soon</span>
+          </div>
+          <h3><a href="../blog/rope-prior-art/">A Little RoPE Goes a Long Way</a></h3>
+          <p>Rotation as an inductive bias for contrastive vision–language encoders:
+          controlled RoPE-under-SigLIP ablations and training-free long-context extrapolation.
+          The story behind it is on the blog.</p>
+        </div>
+      </section>
+    </div>
+
+    <div>
+      <section id="blogs">
+        <div class="sechead"><span class="eyebrow">Writing</span><h2>Blog posts</h2></div>
+        <div class="stack">
+          <div class="card post">
+            <span class="date">July 2026</span>
+            <h3><a href="../blog/rope-prior-art/">A Little RoPE, a Lot of Prior Art</a></h3>
+            <p>Three weeks of controlled RoPE-for-CLIP experiments, one adversarial literature
+            review, and the ICLR 2025 paper that had already published my headline result.</p>
+          </div>
+          <div class="card post">
+            <span class="date">September 2020</span>
+            <h3><a href="../blog/comparing-hyperparameter-tuning-methods/">Comparing Modern Scalable Hyperparameter Tuning Methods</a></h3>
+            <p>Random search vs. Bayesian, HyperBand, and Population-Based Training — an
+            empirical comparison on a DCGAN.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="talks">
+        <div class="sechead"><span class="eyebrow">Talks</span><h2>Recorded talks</h2></div>
+        <div id="talks-mount" class="stack"></div>
+        <p class="small-mono" style="margin-top:0.7rem">More on the <a href="../tutorials/">videos page</a>.</p>
+      </section>
+    </div>
+  </div>
+
+  <footer class="site">
+    <span>© <span id="y"></span> Ayush Chaurasia</span>
+    <span><a href="https://github.com/AyushExel/site">source</a></span>
+  </footer>
+
+</div>
+<script src="../assets/site.js?v=11"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  (async () => {
+    const [scholar, vids] = await Promise.all([
+      fetch("../data/scholar.json?v=11").then(r => r.json()).catch(() => null),
+      fetch("../data/videos.json?v=11").then(r => r.json()).catch(() => []),
+    ]);
+
+    if (scholar && scholar.publications) {
+      document.getElementById("scholar-lead").innerHTML =
+        `<strong>${fmt(scholar.citations)}</strong> citations · h-index <strong>${scholar.h_index}</strong> · i10-index <strong>${scholar.i10_index}</strong>`;
+      document.getElementById("pubs-mount").innerHTML = scholar.publications.map(p => `
+        <div class="card pub">
+          <span class="title"><a href="${p.url}">${p.title}</a><br><span class="venue">${p.venue || ""}${p.year ? " · " + p.year : ""}</span></span>
+          ${p.citations != null ? `<span class="cites">${fmt(p.citations)}&nbsp;cites</span>` : ""}
+        </div>`).join("");
+      document.getElementById("scholar-foot").innerHTML =
+        `As read from <a href="${scholar.profile_url}">Google Scholar</a> on ${scholar.updated} — see the live profile for current numbers.`;
+    }
+
+    // talks = videos tagged "talk"
+    const talks = vids.filter(v => (v.tag || "").toLowerCase().includes("talk"));
+    document.getElementById("talks-mount").innerHTML = talks.map(v => `
+      <div class="card video">
+        <span class="title"><a href="${v.url}">${v.title}</a></span>
+        <span class="tag">${v.tag}</span>
+      </div>`).join("");
+  })();
+</script>
+</body>
+</html>

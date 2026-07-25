@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open Source · Ayush Chaurasia</title>
+  <meta name="description" content="Open-source work: co-created projects and contributions across the ML ecosystem.">
+  <link rel="stylesheet" href="../assets/style.css?v=11">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='6.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><circle cx='14' cy='14' r='11.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><line x1='14' y1='14' x2='19.5' y2='10.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><line x1='14' y1='14' x2='10' y2='4.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><circle cx='14' cy='14' r='1.6' fill='%232b50d8'/></svg>">
+</head>
+<body>
+<div class="page-wide">
+
+  <nav class="nav">
+    <a class="brand" href="../">Ayush Chaurasia</a>
+    <a class="item" href="../">Home</a>
+    <a class="item" href="./" aria-current="page">Open Source</a>
+    <a class="item" href="../publications/">Publications</a>
+    <a class="item" href="../blog/">Blog</a>
+    <a class="item" href="../tutorials/">Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐</button>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Open source</span>
+    <h1>OSS work</h1>
+    <p class="bio">Professionally, I've done a bunch of different things in the dev-tools space,
+    serving ML/AI research engineers — at <a href="https://lancedb.com">LanceDB</a>, at
+    Ultralytics where I led the ML team, and at Weights&nbsp;&amp;&nbsp;Biases where I led
+    open-source integrations and partnerships. Almost all of it happened in public,
+    in the repos below.</p>
+  </header>
+
+  <section id="co-created">
+    <div class="sechead"><span class="eyebrow">Co-created</span><h2>Projects I helped build</h2></div>
+    <div id="cocreated-mount" class="proj-grid"></div>
+    <p class="small-mono" style="margin-top:0.7rem">★ counts fetched live from the GitHub API.</p>
+  </section>
+
+  <section id="committed-to">
+    <div class="sechead"><span class="eyebrow">Committed to</span><h2>Contributions across the ecosystem</h2></div>
+
+    <div class="cols">
+      <div>
+        <div class="thread">
+          <h3>Object detection &amp; the YOLO ecosystem</h3>
+          <p>Co-authored YOLOv8 and the
+          <a href="https://github.com/ultralytics/ultralytics">ultralytics</a> package.
+          In <a href="https://github.com/ultralytics/yolov5">YOLOv5</a>: classification and
+          segmentation model support, the loggers architecture, DDP and fault-tolerant
+          training. Later built Explorer — semantic and SQL search over computer-vision
+          datasets — into the ultralytics package.</p>
+        </div>
+
+        <div class="thread">
+          <h3>Experiment tracking across the ecosystem</h3>
+          <p>At W&amp;B, wired experiment tracking into widely used ML libraries: the W&amp;B
+          sweeps backend in <a href="https://github.com/huggingface/transformers">Hugging Face
+          Transformers</a>, integrations in
+          <a href="https://github.com/catalyst-team/catalyst">Catalyst</a>,
+          <a href="https://github.com/thu-ml/tianshou">Tianshou</a>, and
+          <a href="https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix">CycleGAN/pix2pix</a>,
+          and Sacred support in the <a href="https://github.com/wandb/wandb">wandb</a> client.</p>
+        </div>
+      </div>
+      <div>
+        <div class="thread">
+          <h3>Search &amp; retrieval infrastructure</h3>
+          <p>Core work in <a href="https://github.com/lancedb/lancedb">LanceDB</a>: rerankers,
+          hybrid search, multivector/ColPali support. LanceDB integrations across the RAG and
+          agent ecosystem — <a href="https://github.com/run-llama/llama_index">LlamaIndex</a>,
+          <a href="https://github.com/langchain-ai/langchainjs">LangChain.js</a>, the Retriever
+          API in <a href="https://github.com/microsoft/autogen">AutoGen</a>,
+          <a href="https://github.com/letta-ai/letta">Letta</a>,
+          <a href="https://github.com/agno-agi/agno">Agno</a>,
+          <a href="https://github.com/voxel51/fiftyone">FiftyOne</a>, and multimodal-QA support
+          in Meta's <a href="https://github.com/meta-llama/synthetic-data-kit">synthetic-data-kit</a>.</p>
+        </div>
+
+        <div class="thread">
+          <h3>World-model research infrastructure</h3>
+          <p>In <a href="https://github.com/galilai-group/stable-worldmodel">stable-worldmodel</a>
+          (co-author of the <a href="https://arxiv.org/abs/2605.21800">paper</a>): the
+          Lance-based video data layer, streaming dataset writers, and dataloader benchmarks.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="committer-mount"></div>
+  </section>
+
+  <footer class="site">
+    <span>© <span id="y"></span> Ayush Chaurasia</span>
+    <span>contribution list auto-refreshes weekly · <a href="https://github.com/AyushExel/site">source</a></span>
+  </footer>
+
+</div>
+<script src="../assets/site.js?v=11"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  (async () => {
+    const [repos, cocreated] = await Promise.all([
+      fetch("../data/committer_to.json?v=11").then(r => r.json()).catch(() => []),
+      fetch("../data/cocreated.json?v=11").then(r => r.json()).catch(() => []),
+    ]);
+
+    // --- co-created cards, with star counts fetched LIVE from the GitHub API ---
+    const mount = document.getElementById("cocreated-mount");
+    const card = (p, stars) => `
+      <div class="card project">
+        <div class="top">
+          <h3><a href="${p.url}">${p.name}</a></h3>
+          <span class="meta">${stars ? `★ ${stars}` : ""}</span>
+        </div>
+        <span class="role">${p.role}</span>
+        <p title="${p.desc.replace(/"/g, "&quot;")}">${p.desc}</p>
+        ${p.paper ? `<a class="paper" href="${p.paper.url}">📄 ${p.paper.label}</a>` : ""}
+      </div>`;
+    mount.innerHTML = cocreated.map(p => card(p, p.stars)).join("");
+    // live refresh (best-effort; falls back to stored numbers on rate-limit)
+    Promise.all(cocreated.map(async p => {
+      try {
+        const gh = p.url.match(/github\.com\/([^/]+\/[^/]+)/);
+        if (!gh) return p.stars;
+        const d = await (await fetch(`https://api.github.com/repos/${gh[1]}`)).json();
+        return d.stargazers_count ? fmt(d.stargazers_count) : p.stars;
+      } catch { return p.stars; }
+    })).then(stars => {
+      mount.innerHTML = cocreated.map((p, i) => card(p, stars[i])).join("");
+    });
+
+    // --- full contribution list (weekly-refreshed data), collapsed ---
+    repos.sort((a, b) => b.stars - a.stars);
+    const row = r => `
+      <div class="row">
+        <div class="line1">
+          <span class="name"><a href="${r.url}" title="${(r.desc || "").replace(/"/g, "&quot;")}">${r.repo}</a></span>
+          <span class="stats"><span class="stars">★ ${fmt(r.stars)}</span></span>
+        </div>
+        ${r.contrib ? `<div class="contrib">${r.contrib}</div>` : ""}
+      </div>`;
+    document.getElementById("committer-mount").innerHTML = `
+      <details class="more appendix">
+        <summary>Full contribution list — ${repos.length} repos (listings &amp; summaries fetched by AI 🤖)</summary>
+        <p class="small-mono" style="margin:0.6rem 0 0">A script aggregates my merged PRs from
+        the GitHub API, and the one-line summaries are AI-written from the PR titles.
+        Refreshed weekly; may contain imperfections.</p>
+        <div class="card repo-list">${repos.map(row).join("")}</div>
+      </details>`;
+  })();
+</script>
+</body>
+</html>

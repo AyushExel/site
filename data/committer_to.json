@@ -15,7 +15,7 @@
   "lang": "Python",
   "prs": 1,
   "url": "https://github.com/microsoft/autogen",
-  "contrib": "New Retriever API"
+  "contrib": "Built the new Retriever API"
  },
  {
   "repo": "ultralytics/ultralytics",
@@ -24,7 +24,7 @@
   "lang": "Python",
   "prs": 130,
   "url": "https://github.com/ultralytics/ultralytics",
-  "contrib": "Dataset Explorer \u2014 semantic + SQL search over CV datasets; framework core & docs"
+  "contrib": "Built the dataset Explorer (semantic + SQL search over CV datasets); core framework and docs work"
  },
  {
   "repo": "ultralytics/yolov5",
@@ -33,7 +33,7 @@
   "lang": "Python",
   "prs": 65,
   "url": "https://github.com/ultralytics/yolov5",
-  "contrib": "Classification & segmentation support, loggers refactor, experiment tracking"
+  "contrib": "Added classification & segmentation support, rebuilt the loggers architecture, hardened DDP/fault-tolerant training"
  },
  {
   "repo": "run-llama/llama_index",
@@ -42,7 +42,7 @@
   "lang": "Python",
   "prs": 1,
   "url": "https://github.com/run-llama/llama_index",
-  "contrib": "LanceDB vector-store integration"
+  "contrib": "Maintain the LanceDB vector-store integration"
  },
  {
   "repo": "coqui-ai/TTS",
@@ -59,7 +59,7 @@
   "lang": "Python",
   "prs": 1,
   "url": "https://github.com/agno-agi/agno",
-  "contrib": "Hybrid search + reranking in the LanceDB vectorstore"
+  "contrib": "Added hybrid search and reranking to the LanceDB vectorstore"
  },
  {
   "repo": "explosion/spaCy",
@@ -76,7 +76,7 @@
   "lang": "Python",
   "prs": 2,
   "url": "https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix",
-  "contrib": "W&B experiment logging"
+  "contrib": "Added W&B experiment logging"
  },
  {
   "repo": "letta-ai/letta",
@@ -85,7 +85,7 @@
   "lang": "Python",
   "prs": 1,
   "url": "https://github.com/letta-ai/letta",
-  "contrib": "LanceDB integration fixes & improvements"
+  "contrib": "Fixed and improved the LanceDB integration"
  },
  {
   "repo": "EthicalML/awesome-production-machine-learning",
@@ -102,7 +102,7 @@
   "lang": "TypeScript",
   "prs": 1,
   "url": "https://github.com/langchain-ai/langchainjs",
-  "contrib": "LanceDB integration improvements"
+  "contrib": "Improved the LanceDB integration"
  },
  {
   "repo": "wandb/wandb",
@@ -111,7 +111,7 @@
   "lang": "Python",
   "prs": 4,
   "url": "https://github.com/wandb/wandb",
-  "contrib": "Sacred integration; login-timeout support"
+  "contrib": "Added the Sacred integration and login-timeout support"
  },
  {
   "repo": "lancedb/lancedb",
@@ -120,7 +120,7 @@
   "lang": "HTML",
   "prs": 95,
   "url": "https://github.com/lancedb/lancedb",
-  "contrib": "Rerankers, hybrid search, multivector/ColPali support, docs platform"
+  "contrib": "Built rerankers, hybrid search, and multivector/ColPali support; docs platform"
  },
  {
   "repo": "voxel51/fiftyone",
@@ -129,7 +129,7 @@
   "lang": "TypeScript",
   "prs": 1,
   "url": "https://github.com/voxel51/fiftyone",
-  "contrib": "LanceDB integration docs"
+  "contrib": "Wrote the LanceDB integration docs"
  },
  {
   "repo": "thu-ml/tianshou",
@@ -138,7 +138,7 @@
   "lang": "Python",
   "prs": 2,
   "url": "https://github.com/thu-ml/tianshou",
-  "contrib": "W&B artifacts support + docs"
+  "contrib": "Added W&B artifacts support and usage docs"
  },
  {
   "repo": "espnet/espnet",
@@ -171,7 +171,7 @@
   "lang": "Python",
   "prs": 2,
   "url": "https://github.com/catalyst-team/catalyst",
-  "contrib": "WandbLogger + artifacts support"
+  "contrib": "Added the WandbLogger and artifacts support"
  },
  {
   "repo": "hegelai/prompttools",
@@ -180,7 +180,7 @@
   "lang": "Python",
   "prs": 2,
   "url": "https://github.com/hegelai/prompttools",
-  "contrib": "LanceDB integration"
+  "contrib": "Built the LanceDB integration"
  },
  {
   "repo": "galilai-group/stable-worldmodel",
@@ -189,7 +189,7 @@
   "lang": "Python",
   "prs": 7,
   "url": "https://github.com/galilai-group/stable-worldmodel",
-  "contrib": "Lance video data layer, streaming writers, dataloader benchmarks"
+  "contrib": "Built the Lance video data layer, streaming dataset writers, and dataloader benchmarks"
  },
  {
   "repo": "Forethought-Technologies/AutoChain",
@@ -214,7 +214,7 @@
   "lang": "Python",
   "prs": 1,
   "url": "https://github.com/meta-llama/synthetic-data-kit",
-  "contrib": "Multimodal-QA support"
+  "contrib": "Added multimodal-QA support"
  },
  {
   "repo": "wandb/examples",
@@ -223,7 +223,7 @@
   "lang": "Jupyter Notebook",
   "prs": 4,
   "url": "https://github.com/wandb/examples",
-  "contrib": "Integration examples"
+  "contrib": "Added integration examples"
  },
  {
   "repo": "lancedb/vectordb-recipes",
@@ -240,7 +240,7 @@
   "lang": "Python",
   "prs": 3,
   "url": "https://github.com/galilai-group/stable-pretraining",
-  "contrib": "Lance data-layer support"
+  "contrib": "Added Lance data-layer support"
  },
  {
   "repo": "lancedb/yoloexplorer",

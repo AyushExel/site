@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ayush Chaurasia</title>
-  <meta name="description" content="Ayush Chaurasia — open-source ML engineer. LanceDB, Ultralytics YOLO, research notes and tutorials.">
-  <link rel="stylesheet" href="assets/style.css?v=10">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+  <meta name="description" content="Ayush Chaurasia — ML systems, computer vision, open source. LanceDB, YOLOv8, research and videos.">
+  <link rel="stylesheet" href="assets/style.css?v=11">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='6.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><circle cx='14' cy='14' r='11.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><line x1='14' y1='14' x2='19.5' y2='10.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><line x1='14' y1='14' x2='10' y2='4.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><circle cx='14' cy='14' r='1.6' fill='%232b50d8'/></svg>">
 </head>
 <body>
 <div class="page-wide">
@@ -22,134 +22,78 @@
     </span>
     <a class="brand" href="./">Ayush Chaurasia</a>
     <a class="item" href="./" aria-current="page">Home</a>
+    <a class="item" href="oss/">Open Source</a>
+    <a class="item" href="publications/">Publications</a>
     <a class="item" href="blog/">Blog</a>
-    <a class="item" href="tutorials/">Tutorials &amp; Videos</a>
+    <a class="item" href="tutorials/">Videos</a>
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐</button>
   </nav>
 
   <header class="hero">
-    <span class="eyebrow">Open-source ML engineering &amp; research</span>
     <h1>Ayush Chaurasia</h1>
     <p class="bio">Interested in technology, engineering, philosophy, and music.</p>
-    <p class="bio">Professionally, I've done a bunch of different things in the dev-tools
-    space, serving ML/AI research engineers. I currently work on
-    <a href="https://lancedb.com">LanceDB</a>. Before that I led the ML team at Ultralytics,
-    where I co-authored YOLOv8 and the
-    <a href="https://github.com/ultralytics/ultralytics">ultralytics</a> Python package, and
-    <a href="https://github.com/ultralytics/yolov5/releases/tag/v7.0">YOLOv5-seg</a> — the
-    world's first instance-segmentation model to run in real time on CPU. Before that, I led
-    open-source integrations and partnerships with ML tools at
-    <a href="https://wandb.ai">Weights&nbsp;&amp;&nbsp;Biases</a>, among other things.</p>
+    <p class="bio">I build developer tools for ML/AI people — these days at
+    <a href="https://lancedb.com">LanceDB</a>. This site collects my
+    <a href="oss/">open-source work</a>, <a href="publications/">research and writing</a>,
+    and <a href="tutorials/">videos</a>.</p>
     <div class="links">
       <a href="https://github.com/AyushExel">GitHub</a>
       <a href="https://www.youtube.com/c/AyushChaurasia">YouTube</a>
       <a href="https://x.com/loldedxd">X</a>
-      <a id="scholar-link" href="https://scholar.google.com/citations?user=4XbcwOAAAAAJ">Scholar</a>
+      <a href="https://scholar.google.com/citations?user=4XbcwOAAAAAJ&hl=en">Scholar</a>
       <a href="mailto:ayush@lancedb.com">Email</a>
     </div>
   </header>
 
-  <div class="cols">
-    <div>
-      <section id="co-created">
-        <div class="sechead"><span class="eyebrow">Co-created</span><h2>Things I helped build</h2></div>
-        <div id="cocreated-mount" class="proj-grid"></div>
-      </section>
+  <section>
+    <div class="sechead"><h2>Things I've made that stuck</h2></div>
+    <ul class="facts">
+      <li>Co-authored <strong>YOLOv8</strong> and the
+        <a href="https://github.com/ultralytics/ultralytics">ultralytics</a> package — the most
+        popular open-source computer-vision framework, running everywhere from research labs to
+        production edge devices.</li>
+      <li>Shipped <a href="https://github.com/ultralytics/yolov5/releases/tag/v7.0">YOLOv5-seg</a> —
+        the world's first instance-segmentation model to run in real time on CPU.</li>
+      <li>Co-authored <a href="https://arxiv.org/abs/2605.21800">stable-worldmodel</a>, a platform
+        for reproducible world-model research, with Yann LeCun, Randall Balestriero, and others.</li>
+      <li>Built search and retrieval infrastructure used across the RAG ecosystem — rerankers,
+        hybrid search, and multimodal retrieval in <a href="https://github.com/lancedb/lancedb">LanceDB</a>.</li>
+    </ul>
+  </section>
 
-      <section id="writing">
-        <div class="sechead"><span class="eyebrow">Writing</span><h2>Latest from the blog</h2></div>
-        <div class="card post">
-          <span class="date">July 2026</span>
-          <h3><a href="blog/rope-prior-art/">A Little RoPE, a Lot of Prior Art</a></h3>
-          <p>Three weeks of controlled RoPE-for-CLIP experiments, one adversarial literature
-          review, and the ICLR 2025 paper that had already published my headline result.</p>
-        </div>
-        <p class="small-mono" style="margin-top:0.7rem"><a href="blog/">All posts →</a></p>
-      </section>
+  <section>
+    <div class="sechead"><h2>Side quests</h2></div>
+    <ul class="facts">
+      <li>My most-cited "publication" is a GitHub release — a
+        <a href="https://scholar.google.com/citations?user=4XbcwOAAAAAJ&hl=en">YOLOv5 Zenodo
+        snapshot</a> with 6,000+ academic citations.</li>
+      <li>I once ran an adversarial review on my own paper — it found I'd been scooped by an
+        ICLR paper I'd never heard of. <a href="blog/rope-prior-art/">Wrote up the whole story.</a></li>
+      <li>The most-watched video on my YouTube channel is about
+        <a href="https://www.youtube.com/watch?v=11Rcr7_Khldk">hiding images inside other images</a>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="sechead"><h2>What I'm working on</h2></div>
+    <div class="card post" style="max-width:47rem">
+      <div class="postline">
+        <span class="date">July 2026</span>
+        <span class="pill">preprint coming soon</span>
+      </div>
+      <h3><a href="blog/rope-prior-art/">A Little RoPE, a Lot of Prior Art</a></h3>
+      <p>Rotation as an inductive bias for contrastive vision–language encoders — and the
+      adversarial literature review that reshaped the paper's claims.</p>
     </div>
-
-    <div>
-      <section id="scholar">
-        <div class="sechead"><span class="eyebrow">Research</span><h2>Publications</h2></div>
-        <p class="lead" id="scholar-lead"></p>
-        <div id="pubs-mount" class="stack"></div>
-        <p class="small-mono" id="scholar-foot" style="margin-top:0.7rem"></p>
-      </section>
-
-      <section id="committer-to">
-        <div class="sechead"><span class="eyebrow">Committer to</span><h2>Contributions</h2></div>
-        <p class="lead" id="committer-lead"></p>
-        <div id="committer-mount" class="card repo-list"></div>
-      </section>
-    </div>
-  </div>
+  </section>
 
   <footer class="site">
     <span>© <span id="y"></span> Ayush Chaurasia</span>
-    <span>stats auto-refresh weekly · <a href="https://github.com/AyushExel/site">source</a></span>
+    <span><a href="https://github.com/AyushExel/site">source</a></span>
   </footer>
 
 </div>
-<script src="assets/site.js?v=10"></script>
-<script>
-  document.getElementById("y").textContent = new Date().getFullYear();
-
-  (async () => {
-    const [repos, scholar, cocreated] = await Promise.all([
-      fetch("data/committer_to.json?v=10").then(r => r.json()).catch(() => []),
-      fetch("data/scholar.json?v=10").then(r => r.json()).catch(() => null),
-      fetch("data/cocreated.json?v=10").then(r => r.json()).catch(() => []),
-    ]);
-
-    repos.sort((a, b) => b.stars - a.stars);
-    if (scholar && scholar.profile_url) document.getElementById("scholar-link").href = scholar.profile_url;
-
-    // --- co-created cards ---
-    document.getElementById("cocreated-mount").innerHTML = cocreated.map(p => `
-      <div class="card project">
-        <div class="top">
-          <h3><a href="${p.url}">${p.name}</a></h3>
-          <span class="meta">${p.stars ? `★ ${p.stars}` : ""}</span>
-        </div>
-        <span class="role">${p.role}</span>
-        <p title="${p.desc.replace(/"/g, "&quot;")}">${p.desc}</p>
-        ${p.paper ? `<a class="paper" href="${p.paper.url}">📄 ${p.paper.label}</a>` : ""}
-      </div>`).join("");
-
-    // --- committer-to: one-liner summary, then popular repos with value blurbs ---
-    const totalPRs = repos.reduce((s, r) => s + r.prs, 0);
-    const big = repos.filter(r => r.stars >= 5000).length;
-    document.getElementById("committer-lead").innerHTML =
-      `${totalPRs}+ merged PRs across ${repos.length} open-source repositories — ` +
-      `${big} of them with over 5k stars. Some popular ones:`;
-    const row = r => `
-      <div class="row">
-        <div class="line1">
-          <span class="name"><a href="${r.url}" title="${(r.desc || "").replace(/"/g, "&quot;")}">${r.repo}</a></span>
-          <span class="stats"><span class="stars">★ ${fmt(r.stars)}</span></span>
-        </div>
-        <div class="contrib">${r.contrib || r.prs + " merged PR" + (r.prs > 1 ? "s" : "")}</div>
-      </div>`;
-    const VISIBLE = 8;
-    document.getElementById("committer-mount").innerHTML =
-      repos.slice(0, VISIBLE).map(row).join("") +
-      (repos.length > VISIBLE
-        ? `<details class="more"><summary>${repos.length - VISIBLE} more</summary>${repos.slice(VISIBLE).map(row).join("")}</details>`
-        : "");
-
-    // --- publications (numbers read from the Scholar profile; see date note) ---
-    if (scholar && scholar.publications) {
-      document.getElementById("scholar-lead").innerHTML =
-        `<strong>${fmt(scholar.citations)}</strong> citations · h-index <strong>${scholar.h_index}</strong> · i10-index <strong>${scholar.i10_index}</strong>`;
-      document.getElementById("pubs-mount").innerHTML = scholar.publications.map(p => `
-        <div class="card pub">
-          <span class="title"><a href="${p.url}">${p.title}</a><br><span class="venue">${p.venue || ""}${p.year ? " · " + p.year : ""}</span></span>
-          ${p.citations != null ? `<span class="cites">${fmt(p.citations)}&nbsp;cites</span>` : ""}
-        </div>`).join("");
-      document.getElementById("scholar-foot").innerHTML =
-        `As read from <a href="${scholar.profile_url}">Google Scholar</a> on ${scholar.updated} — see the live profile for current numbers.`;
-    }
-  })();
-</script>
+<script src="assets/site.js?v=11"></script>
+<script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 </body>
 </html>

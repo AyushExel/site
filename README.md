@@ -1,23 +1,30 @@
 # ayushexel/site
 
 Personal website — pure static files, no framework, no build step. Hosted on GitHub Pages
-at https://ayushexel.github.io/site/ (Settings → Pages → branch `main`, root).
+at **https://batchnorm.com/** (custom domain on this repo; `ayushexel.github.io/site` redirects).
 
 ```
-index.html               landing: bio, co-created, publications, contributions
+index.html               home: intro, highlights, side quests, what I'm working on
+oss/index.html           open source: co-created (live ★ from GitHub API) + contributions
+publications/index.html  papers (Scholar data), in-progress, blog posts, talks
 blog/
-  index.html             blog listing page
-  rope-prior-art/        one folder per post, each with its own index.html
+  index.html             blog listing
+  <slug>/index.html      one folder per post (images in <slug>/img/)
 tutorials/index.html     videos page (playable lite YouTube embeds)
 assets/style.css         the entire design system (tokens, light/dark, components)
-assets/site.js           theme toggle + JSON renderers (videos, etc.)
-data/committer_to.json   OSS contributions — AUTO-refreshed weekly by GitHub Action
+assets/site.js           theme toggle + video renderer
+data/committer_to.json   OSS contributions — AUTO-refreshed weekly by GitHub Action;
+                         hand-written "contrib" blurbs are preserved across refreshes
 data/cocreated.json      co-created projects — edit by hand
 data/scholar.json        Google Scholar numbers — edit by hand (see below)
 data/videos.json         video list — edit by hand
 scripts/refresh_data.py  regenerates committer_to.json from the GitHub API
+scripts/port_post.py     ports an external article into a site-styled blog post
 .github/workflows/       the weekly refresh Action (Mondays 06:17 UTC + manual runs)
 ```
+
+Width system: listing pages use `.page-wide` (66rem); article pages use `.page`
+(50rem reading measure). Every page is one or the other.
 
 ---
 
@@ -60,8 +67,15 @@ Each post is a folder under `blog/` with a single `index.html`.
      cards. Delete what you don't need.
 3. **List the post in two places:**
    - `blog/index.html` — add a `.card.post` entry (date, linked title, one-paragraph teaser).
-   - `index.html` — update the "Latest from the blog" card in the Writing section.
+   - `publications/index.html` — add a matching card under "Blog posts".
 4. Commit and push. Done — no build step.
+
+**Porting an article from elsewhere** (Medium, etc.): write a markdown file with a
+`---META---` header (title/date/venue/canonical) and `---BODY---` content, then
+`python3 scripts/port_post.py input.md <slug>`. It downloads images locally and emits the
+styled page. For scraper-walled sources (Medium 403s bots), save the page from a logged-in
+browser as "Webpage, Complete" — text, images, and even embedded gists are recoverable
+from the saved folder (see git history of blog/comparing-hyperparameter-tuning-methods).
 
 Writing tip: the design is calibrated for long-form technical writing — displayed equations
 in `.math` blocks, real code in `pre` with muted comments, tables inside

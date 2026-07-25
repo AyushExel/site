@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+  We disable Google Translate because it does not play well with React 16
+  See https://github.com/facebook/react/issues/11538
+-->
+<html lang="en" class="notranslate">
+  <head>
+    <style>
+      html {
+        background-color: #f9f9f9;
+      }
+      html[data-mode='dark'] {
+        background-color: #232323;
+      }
+      /* anti-flicker snippet for Google Optimize */
+      .async-hide {
+        opacity: 0 !important;
+      }
+    </style>
+    <script>
+      const theme = localStorage.getItem('__wb_theme') || 'light';
+      if (theme === 'dark') {
+        document.documentElement.classList.add('night-mode');
+        // Used for tailwind dark mode
+        document.documentElement.setAttribute('data-mode', 'dark');
+
+        // The data attribute used by @wandb/components to toggle dark mode
+        document.documentElement.setAttribute('data-dark-mode', 'true');
+      } else {
+        document.documentElement.classList.remove('night-mode');
+        document.documentElement.removeAttribute('data-mode');
+
+        document.documentElement.removeAttribute('data-dark-mode');
+      }
+    </script>
+
+    <meta name="robots" content="max-image-preview:large" />
+    <meta name="robots" content="index, follow" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="fb:app_id" content="420039241995197"><meta property="og:type" content="article"><meta property="og:site_name" content="W&B"><meta property="og:title" content="Modern Scalable Hyperparameter Tuning Methods With Weights & Biases"><meta property="og:description" content="This article provides a comparison of Random search, Bayesian search using HyperOpt, Bayesian search combined with Asynchronous Hyperband, and Population Based Training."><meta property="og:image" content="https://storage.googleapis.com/wandb-production.appspot.com/wandb/images/views/214183/preview.png?md5=cbfe3d9485d53a336166804e976e4b25"><meta property="og:url" content="https://wandb.ai/wandb/DistHyperOpt/reports/Modern-Scalable-Hyperparameter-Tuning-Methods-With-Weights-Biases--VmlldzoyMTQxODM?accessToken=nsw4hlcncv7ucazd6z8zvm8amu7ltx6zkka5vsoikola3lm7m1m3zqi1r02u2hce">
+    <meta name="twitter:card" content="summary"><meta name="twitter:site" content="@weights_biases"><meta name="twitter:creator" content="@cayush"><meta name="description" content="This article provides a comparison of Random search, Bayesian search using HyperOpt, Bayesian search combined with Asynchronous Hyperband, and Population Based Training."><meta property="article:published_time" content="2020-08-23T16:54:13Z"><meta property="article:modified_time" content="2022-11-04T16:48:14Z"><meta property="article:author" content="https://wandb.ai/cayush"><meta name="author" content="Ayush Chaurasia"><link rel="author" href="https://wandb.ai/cayush"><script type="application/ld+json">{"@context":"http://schema.org","@graph":[{"@type":"TechArticle","url":"https://wandb.ai/wandb/DistHyperOpt/reports/Modern-Scalable-Hyperparameter-Tuning-Methods-With-Weights-Biases--VmlldzoyMTQxODM?accessToken=nsw4hlcncv7ucazd6z8zvm8amu7ltx6zkka5vsoikola3lm7m1m3zqi1r02u2hce","dateCreated":"2020-08-23T16:54:13Z","datePublished":"2020-08-23T16:54:13Z","dateModified":"2022-11-04T16:48:14Z","headline":"Modern Scalable Hyperparameter Tuning Methods With Weights & Biases","name":"Modern Scalable Hyperparameter Tuning Methods With Weights & Biases","description":"This article provides a comparison of Random search, Bayesian search using HyperOpt, Bayesian search combined with Asynchronous Hyperband, and Population Based Training.","image":["https://storage.googleapis.com/wandb-production.appspot.com/wandb/images/views/214183/preview.png?md5=cbfe3d9485d53a336166804e976e4b25"],"thumbnailUrl":["https://storage.googleapis.com/wandb-production.appspot.com/wandb/images/views/214183/preview.png?md5=cbfe3d9485d53a336166804e976e4b25"],"id":"VmlldzoyMTQxODM","articleSection":"Intermediate","keywords":[],"author":{"@type":"Person","name":"Ayush Chaurasia","url":"https://wandb.ai/cayush"},"creator":["Ayush Chaurasia"],"publisher":{"@type":"Corporation","@id":"https://wandb.ai/#organization","name":"Weights & Biases, Inc.","description":"Weights & Biases is on mission is to build the best tools for machine learning. Their experienced technical cofounders built Figure Eight, and their tools are being used by cutting-edge machine learning teams including OpenAI and Toyota.","image":"https://assets.website-files.com/5ac6b7f2924c656f2b13a88c/5f3ea98410a400266d2579b5_image%2015.jpg","logo":"https://wandb.ai/logo.png","url":"https://wandb.ai/site","sameAs":["https://www.google.com/search?q=knowledge+graph+search+api&kponly&kgmid=/g/11f7h7qw7s","https://twitter.com/weights_biases","https://www.linkedin.com/company/weights-biases","https://www.facebook.com/weightsandbiases","https://www.youtube.com/channel/UCBp3w4DCEC64FZr4k9ROxig","https://www.crunchbase.com/organization/weights-biases","https://github.com/wandb"],"address":{"@type":"PostalAddress","streetAddress":"1479 Folsom St","addressLocality":"San Francisco","postalCode":"94103","addressCountry":"US"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"id":"https://wandb.ai/cayush","name":"cayush"}},{"@type":"ListItem","position":2,"item":{"id":"https://wandb.ai/wandb/DistHyperOpt/reports/Modern-Scalable-Hyperparameter-Tuning-Methods--VmlldzoyMTQxODM","name":"Modern Scalable Hyperparameter Tuning Methods With Weights & Biases"}}]}]}</script><link rel="canonical" href="https://wandb.ai/wandb/DistHyperOpt/reports/Modern-Scalable-Hyperparameter-Tuning-Methods-With-Weights-Biases--VmlldzoyMTQxODM?accessToken=nsw4hlcncv7ucazd6z8zvm8amu7ltx6zkka5vsoikola3lm7m1m3zqi1r02u2hce">
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+
+    <link rel="manifest" href="https://cdn.wandb.ai/production/adfe6a5d8/manifest.json" />
+    <!-- Sentry --->
+    <script src="https://cdn.wandb.ai/production/adfe6a5d8/raven.min.js" crossorigin="anonymous"></script>
+    <!-- Prism syntax highlighting, TODO: just use what's in the bundle -->
+    <script src="https://cdn.wandb.ai/production/adfe6a5d8/prism.js" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.wandb.ai/production/adfe6a5d8/prism.css" crossorigin="anonymous" />
+    <link rel="shortcut icon" type="image/png" href="https://cdn.wandb.ai/production/adfe6a5d8/favicon.png" />
+    <link rel="apple-touch-icon" href="https://cdn.wandb.ai/production/adfe6a5d8/favicon.png" />
+    <title>Modern Scalable Hyperparameter Tuning Methods With Weights & Biases</title>
+    <script type="module" crossorigin src="https://cdn.wandb.ai/production/adfe6a5d8/assets/index-6Z4uBjNj.js"></script>
+    <link rel="stylesheet" crossorigin href="https://cdn.wandb.ai/production/adfe6a5d8/assets/index-B2-R70l4.css">
+  
+        <script>
+          window.__WB_BOT_MODE = true;
+        </script>
+        <style>
+          #root {
+            overflow-x: auto;
+          }
+        </style>
+
+      </head>
+
+    <script>window.CONFIG = Object.assign({}, window.CONFIG, {FEATURE_FLAGS: Object.assign({}, window.CONFIG?.FEATURE_FLAGS, {"apollo_client_v3_user":false})});</script>
+    <script src="https://cdn.wandb.ai/production/adfe6a5d8/env.js" crossorigin="anonymous"></script>
+  <body>
+    <div id="root" style="height: 100%"></div>
+    <script>
+      window.Prism = window.Prism || {
+        highlightAll: function () {},
+      };
+    </script>
+    <script src="https://cdn.wandb.ai/production/adfe6a5d8/consentAwareAnalyticsInjector.js" crossorigin="anonymous"></script>
+  </body>
+</html>

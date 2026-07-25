@@ -4,18 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Blog · Ayush Chaurasia</title>
-  <link rel="stylesheet" href="../assets/style.css?v=10">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
+  <link rel="stylesheet" href="../assets/style.css?v=11">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='6.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><circle cx='14' cy='14' r='11.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><line x1='14' y1='14' x2='19.5' y2='10.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><line x1='14' y1='14' x2='10' y2='4.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><circle cx='14' cy='14' r='1.6' fill='%232b50d8'/></svg>">
 </head>
 <body>
-<div class="page">
+<div class="page-wide">
 
   <nav class="nav">
     <a class="brand" href="../">Ayush Chaurasia</a>
     <a class="item" href="../">Home</a>
+    <a class="item" href="../oss/">Open Source</a>
+    <a class="item" href="../publications/">Publications</a>
     <a class="item" href="./" aria-current="page">Blog</a>
-    <a class="item" href="../tutorials/">Tutorials &amp; Videos</a>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐ theme</button>
+    <a class="item" href="../tutorials/">Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐</button>
   </nav>
 
   <header class="hero">
@@ -26,14 +28,21 @@
   </header>
 
   <section>
-    <div class="stack">
+    <div class="stack" style="max-width:50rem">
       <div class="card post">
-        <span class="date">July 2026 · ~18 min</span>
+        <span class="date">July 2026</span>
         <h3><a href="rope-prior-art/">A Little RoPE, a Lot of Prior Art</a></h3>
         <p>Three weeks of controlled RoPE-for-CLIP experiments, one adversarial literature
         review, and the ICLR 2025 paper that had already published my headline result.
         Includes a full primer on rotary position embeddings, the SigLIP loss, and
         NTK-aware length extrapolation.</p>
+      </div>
+      <div class="card post">
+        <span class="date">September 2020</span>
+        <h3><a href="comparing-hyperparameter-tuning-methods/">Comparing Modern Scalable Hyperparameter Tuning Methods</a></h3>
+        <p>Random search, Bayesian search with HyperOpt, Asynchronous HyperBand, and
+        Population-Based Training, compared head-to-head by training a DCGAN on MNIST —
+        with Ray Tune and W&amp;B dashboards for every run.</p>
       </div>
     </div>
   </section>
@@ -44,7 +53,7 @@
   </footer>
 
 </div>
-<script src="../assets/site.js?v=10"></script>
+<script src="../assets/site.js?v=11"></script>
 <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 </body>
 </html>

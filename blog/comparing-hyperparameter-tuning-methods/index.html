@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparing Modern Scalable Hyperparameter Tuning Methods · Ayush Chaurasia</title>
+  <meta name="description" content="Comparing Modern Scalable Hyperparameter Tuning Methods">
+  <link rel="canonical" href="https://medium.com/data-science/comparing-modern-scalable-hyperparameter-tuning-methods-dfe9661e947f">
+  <link rel="stylesheet" href="../../assets/style.css?v=11">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='6.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><circle cx='14' cy='14' r='11.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><line x1='14' y1='14' x2='19.5' y2='10.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><line x1='14' y1='14' x2='10' y2='4.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><circle cx='14' cy='14' r='1.6' fill='%232b50d8'/></svg>">
+</head>
+<body>
+<div class="page">
+
+  <nav class="nav">
+    <a class="brand" href="../../">Ayush Chaurasia</a>
+    <a class="item" href="../../">Home</a>
+    <a class="item" href="../../oss/">Open Source</a>
+    <a class="item" href="../../publications/">Publications</a>
+    <a class="item" href="../">Blog</a>
+    <a class="item" href="../../tutorials/">Videos</a>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle color theme">◐</button>
+  </nav>
+
+  <header class="hero">
+    <span class="eyebrow">Blog</span>
+    <h1>Comparing Modern Scalable Hyperparameter Tuning Methods</h1>
+    <div class="byline small-mono">Ayush Chaurasia · September 28, 2020</div>
+  </header>
+
+  <article class="post-body">
+<figure><img src="img/01.jpg" alt="Source: pixabay" loading="lazy"><figcaption>Source: pixabay</figcaption></figure>
+<p>In this post, we’ll compare the following hyper-parameter optimization methods.</p>
+<ul><li>Random Search</li><li>Bayesian Search using HyperOpt</li><li>Bayesian Search combined with Asynchronous Hyperband</li><li>Population-Based Training</li></ul>
+<h3>Experiment</h3>
+<p>we’ll train a simple DCGAN on the MNIST dataset and optimize the model for maximizing the inception score.</p>
+<p>We’ll use Ray Tune to perform these experiments and track the results on the W&amp;B dashboard.</p>
+<p>I also did a video on my channel that goes in-depth in explaining this experiment -</p>
+<p><a href="https://wandb.ai/wandb/DistHyperOpt/reports/Modern-Scalable-Hyperparameter-Tuning-Methods--VmlldzoyMTQxODM?accessToken=nsw4hlcncv7ucazd6z8zvm8amu7ltx6zkka5vsoikola3lm7m1m3zqi1r02u2hce">Link to the Live Dashboard</a></p>
+<h3>The Search Space</h3>
+<p>We’ll use the same search space for all the experiments in order to make the comparison fair.</p>
+<pre><code>config = {
+        &quot;netG_lr&quot;: lambda: np.random.uniform(1e-2, 1e-5),
+        &quot;netD_lr&quot;: lambda: np.random.uniform(1e-2, 1e-5),
+        &quot;beta1&quot;: [0.3,0.5,0.8]
+}</code></pre>
+<p>Let’s perform a random search across the search space to see how well it optimizes. This will also act as the baseline metric for our comparison. Our experimental setup has 2 GPUs and 4 CPUs. We’ll parallelize the operation across multiple GPUs. Ray Tune does this automatically for you if you specify the <code>resources_per_trail</code>.</p>
+<pre><code>analysis = tune.run(
+    dcgan_train,
+    resources_per_trial={&#x27;gpu&#x27;: 1,&#x27;cpu&#x27;:2}, # Tune will use this information to parallelize the tuning operation
+    num_samples=10,
+    config=config
+)</code></pre>
+<p>Let’s see the results</p>
+<figure><img src="img/02.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<h3>Inference</h3>
+<p>As expected, we get varied results.</p>
+<ul><li>Some of the models did optimize as the tuner got lucky and chose the right set of hyper-parameters</li><li>but some models’ inception score graph remained flat as they did not optimize due to bad hyper-parameter values.</li><li>Thus, when using a random search, you might end up reaching the optimal value but you definitely end up wasting a lot of resources on the runs that don’t add any value.</li></ul>
+<p>The basic idea behind Bayesian Hyperparameter tuning is to not be completely random in your choice for hyper-parameters but instead use the information from the prior runs to choose the hyperparameters for the next run. Tune supports HyperOpt which implements Bayesian search algorithms. Here’s how you do it.</p>
+<p>Here’s what results look like</p>
+<figure><img src="img/03.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<h3>Inference</h3>
+<ul><li>There are significant improvements compared to the previous run as there is only 1 flat curve.</li><li>This implies that the search algorithm chose the hyper-parameter values based on the results of previous runs.</li><li>On average, the runs performed better than random search</li><li>Resource wastage can be avoided by terminating the bad runs earlier.</li></ul>
+<p>The idea Asynchronous Hyperband is to eliminate or terminate the runs that don’t perform well. It makes sense to combine this method with the Bayesian search to see if we can further reduce the wastage of resources on the runs that don’t optimize. We just need to make a small change in our code to accommodate Hyperband.</p>
+<p>Let us now see how this performs</p>
+<figure><img src="img/04.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<h3>Inference</h3>
+<ul><li>Only 2 out of 20 runs were executed for defined epochs while others were terminated earlier.</li><li>The highest accuracy achieved was still slightly higher than the runs without the Hyperband scheduler.</li><li>Thus, by terminating bad runs early on in the training process, we have not only speeded up the tuning job but also saved compute resources.</li></ul>
+<p>!<a href="img/05.png">Image source — [https://wandb.ai/wandb/DistHyperOpt/reports/Modern-Scalable-Hyperparameter-Tuning-Methods--VmlldzoyMTQxODM</a>](img/05.png)</p>
+<p>The last tuning algorithm that we’ll cover is population-based training (PBT) introduced by Deepmind research. The basic idea behind the algorithm in layman terms:</p>
+<ul><li>Run the optimization process for some samples for a given time step(or iterations) T.</li><li>After every T iterations, compare the runs and copy the weights of good performing runs to the bad performing runs and change their hyper-parameter values to be close to the values of the runs that performed well.</li><li>Terminate the worst-performing runs. Although the idea behind the algorithm seems simple, there is a lot of complex optimization math that goes into building this from scratch. Tune provides a scalable and easy-to-use implementation of the SOTA PBT algorithm</li></ul>
+<p>Let us now look at the results.</p>
+<figure><img src="img/06.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<h3>Inference</h3>
+<p>The results look quite surprising. There are multiple factors that are unique about these results.</p>
+<ul><li>Almost all the runs have reached the optimal point</li><li>The highest score( of 6.29) was achieved by one of the runs</li><li>The runs that started off as bad performers or outliers have also converged as the experiment proceeded.</li><li>There are no runs that have a flat inception score graph</li><li>Some bad performing runs were stopped in the middle of the process</li><li>Thus, no resource has been wasted on bad runs</li></ul>
+<p>The answer is the hyper-parameter mutation done by the PBT scheduler. After every <code>T</code> time steps, the algorithm also mutates the values of hyper-parameters to maximize the desired metric. Here's how the parameters were mutated by the PBT scheduler for this experiment.</p>
+<p>Let us now see how the hyper-parameters were adjusted by the PBT algorithm to maximize the inception score</p>
+<figure><img src="img/07.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<figure><img src="img/08.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<ul><li>The hyper-parameter values are constantly adjusted throughout the experiment.</li><li>The runs that start off with a bad hyper-parameter value are soon updated.</li><li>PBT operates on explore and exploit methodology exploring the space for good parameter values and exploits by updating the bad runs.</li></ul>
+<p>We’ll now reduce the number of runs to 5 in order to make things difficult for PBT. Let’s see how it performs under this restricted circumstance.</p>
+<figure><img src="img/09.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<ul><li>Even after reducing the number of runs to 5, PBT optimizer still outperforms random search and bayesian optimization.</li><li>As expected, the bad performing runs were terminated early on in the training process</li></ul>
+<p>Here’s how the final comparison of the average inception scores looks like. We’ve averaged across 5 run sets:</p>
+<ul><li>Random Search — 10 Runs ( Job Type — mnist-random)</li><li>Bayesian Search — 10 Runs ( Job Type — mnist-hyperopt)</li><li>Bayesian Search with Hyperband — 20 Runs (Job Type- mnist-SHA2-hyperopt)</li><li>PBT scheduler — 10 Runs (Job Type — mnist-pbt2)</li><li>PBT scheduler — 5 Runs (Job Type — mnist-pbt3)</li></ul>
+<figure><img src="img/10.png" alt="Image by author" loading="lazy"><figcaption>Image by author</figcaption></figure>
+<p>If you enjoyed reading this, you can follow me on <a href="https://twitter.com/ayushex">twitter</a> to get more updates. I also make deep learning videos on my <a href="https://www.youtube.com/channel/UCgpckFNtZEOSjPFpQf-Kn8w">youtube channel</a>.</p>
+  </article>
+
+  <footer class="site">
+    <span>© <span id="y"></span> Ayush Chaurasia</span>
+    <span><a href="../">← all posts</a></span>
+  </footer>
+
+</div>
+<script src="../../assets/site.js?v=11"></script>
+<script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     "url": "https://github.com/ultralytics/ultralytics",
     "stars": "59.3k",
     "role": "co-author",
-    "desc": "Co-author of YOLOv8 and the Ultralytics Python framework (Jocher, Chaurasia, Qiu 2023) \u2014 the most-used object detection stack in the world.",
+    "desc": "Co-author of YOLOv8 and the Ultralytics Python framework (Jocher, Chaurasia, Qiu 2023): the most-used object detection stack in the world.",
     "paper": {
       "label": "Citation: Ultralytics YOLOv8 (2023)",
       "url": "https://github.com/ultralytics/ultralytics/blob/main/CITATION.cff"
@@ -15,7 +15,7 @@
     "url": "https://github.com/ultralytics/yolov5",
     "stars": "57.6k",
     "role": "#2 contributor",
-    "desc": "Second-most-active human contributor \u2014 experiment tracking, classification support, fault-tolerant training, and the integrations ecosystem.",
+    "desc": "Second-most-active human contributor: experiment tracking, classification support, fault-tolerant training, and the integrations ecosystem.",
     "paper": {
       "label": "Zenodo software DOI (v5.0, 2021)",
       "url": "https://doi.org/10.5281/zenodo.4679653"
@@ -37,7 +37,7 @@
     "url": "https://github.com/lancedb/lancedb",
     "stars": "10.8k",
     "role": "#5 contributor",
-    "desc": "The multimodal lakehouse \u2014 vector search and data infrastructure for AI. Early team; Python API, integrations, and the developer ecosystem.",
+    "desc": "The multimodal lakehouse: vector search and data infrastructure for AI. Early team; Python API, integrations, and the developer ecosystem.",
     "paper": null
   }
 ]

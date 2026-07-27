@@ -1,19 +1,28 @@
 /* Shared site behavior: theme toggle + data-driven sections. */
 
 (function themeInit() {
+  const MODES = ["light", "dark", "funky"];
+  const GLYPH = { light: "◐", dark: "◑", funky: "✿" };
   const saved = localStorage.getItem("theme");
-  if (saved === "light" || saved === "dark") {
+  if (MODES.includes(saved)) {
     document.documentElement.setAttribute("data-theme", saved);
   }
+  function paintButtons(mode) {
+    document.querySelectorAll(".theme-toggle").forEach(b => { b.textContent = GLYPH[mode]; });
+  }
+  function currentMode() {
+    return (
+      document.documentElement.getAttribute("data-theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+    );
+  }
   window.toggleTheme = function () {
-    const root = document.documentElement;
-    const current =
-      root.getAttribute("data-theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    const next = current === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
+    const next = MODES[(MODES.indexOf(currentMode()) + 1) % MODES.length];
+    document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("theme", next);
+    paintButtons(next);
   };
+  addEventListener("DOMContentLoaded", () => paintButtons(currentMode()));
 })();
 
 const fmt = (n) =>

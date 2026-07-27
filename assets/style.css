@@ -329,3 +329,39 @@ footer.site {
   display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
 }
 footer.site a { color: var(--muted); }
+
+/* ---------- funky theme (toggle-only third mode: light → dark → funky) ---------- */
+:root[data-theme="funky"] {
+  color-scheme: light;
+  --ground: #faf3ff;         /* lilac paper */
+  --card: #ffffff;
+  --ink: #2a1b3d;
+  --muted: #5d4a75;
+  --faint: #9c86b8;
+  --line: #e9d8fa;
+  --accent: #ff4f9a;         /* bubblegum */
+  --accent-ink: #d61c72;
+  --accent-soft: #ffe1ef;
+  --serif: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN", "Comic Sans MS", sans-serif;
+}
+[data-theme="funky"] ::selection { background: var(--accent-soft); }
+[data-theme="funky"] h1 { letter-spacing: 0; }
+[data-theme="funky"] .card {
+  border-width: 2px; border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--accent-soft);
+}
+[data-theme="funky"] .project:hover { transform: translateY(-2px) rotate(-0.4deg); }
+[data-theme="funky"] .sechead::after {
+  background: none; height: 0; border-top: 2px dashed var(--line);
+}
+[data-theme="funky"] .hero .links a {
+  border-width: 2px; box-shadow: 2px 2px 0 var(--accent-soft);
+}
+[data-theme="funky"] .hero .links a:hover { transform: rotate(-1.2deg); }
+[data-theme="funky"] .nav a.item[aria-current="page"] { border-bottom-width: 3px; }
+[data-theme="funky"] .postline .pill, [data-theme="funky"] .video .tag, [data-theme="funky"] .vidcard .tag {
+  transform: rotate(-1.5deg);
+}
+[data-theme="funky"] .bm1 { animation-duration: 3s; }
+[data-theme="funky"] .bm2 { animation-duration: 9s; }
+[data-theme="funky"] .repo-list .contrib::before { content: "\1F49E "; }

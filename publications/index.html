@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Publications · Ayush Chaurasia</title>
   <meta name="description" content="Papers, blog posts, and talks.">
-  <link rel="stylesheet" href="../assets/style.css?v=11">
+  <link rel="stylesheet" href="../assets/style.css?v=12">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='6.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><circle cx='14' cy='14' r='11.5' fill='none' stroke='%238a94a3' stroke-width='1.4' stroke-dasharray='2 2.4'/><line x1='14' y1='14' x2='19.5' y2='10.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><line x1='14' y1='14' x2='10' y2='4.5' stroke='%232b50d8' stroke-width='2.2' stroke-linecap='round'/><circle cx='14' cy='14' r='1.6' fill='%232b50d8'/></svg>">
 </head>
 <body>
@@ -63,7 +63,7 @@
           <div class="card post">
             <span class="date">September 2020</span>
             <h3><a href="../blog/comparing-hyperparameter-tuning-methods/">Comparing Modern Scalable Hyperparameter Tuning Methods</a></h3>
-            <p>Random search vs. Bayesian, HyperBand, and Population-Based Training — an
+            <p>Random search vs. Bayesian, HyperBand, and Population-Based Training: an
             empirical comparison on a DCGAN.</p>
           </div>
         </div>
@@ -83,14 +83,14 @@
   </footer>
 
 </div>
-<script src="../assets/site.js?v=11"></script>
+<script src="../assets/site.js?v=12"></script>
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
   (async () => {
     const [scholar, vids] = await Promise.all([
-      fetch("../data/scholar.json?v=11").then(r => r.json()).catch(() => null),
-      fetch("../data/videos.json?v=11").then(r => r.json()).catch(() => []),
+      fetch("../data/scholar.json?v=12").then(r => r.json()).catch(() => null),
+      fetch("../data/videos.json?v=12").then(r => r.json()).catch(() => []),
     ]);
 
     if (scholar && scholar.publications) {
@@ -102,7 +102,7 @@
           ${p.citations != null ? `<span class="cites">${fmt(p.citations)}&nbsp;cites</span>` : ""}
         </div>`).join("");
       document.getElementById("scholar-foot").innerHTML =
-        `As read from <a href="${scholar.profile_url}">Google Scholar</a> on ${scholar.updated} — see the live profile for current numbers.`;
+        `As read from <a href="${scholar.profile_url}">Google Scholar</a> on ${scholar.updated}. See the live profile for current numbers.`;
     }
 
     // talks = videos tagged "talk"

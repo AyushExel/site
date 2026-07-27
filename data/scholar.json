@@ -7,7 +7,7 @@
  "note": "Scholar splits the YOLO software citation across many variants; the totals above include all of them.",
  "publications": [
   {
-   "title": "YOLOv5 v6.2 \u2014 classification models, Apple M1, reproducibility",
+   "title": "YOLOv5 v6.2: classification models, Apple M1, reproducibility",
    "venue": "Zenodo (software)",
    "year": 2022,
    "citations": 6292,
@@ -21,7 +21,7 @@
    "url": "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=4XbcwOAAAAAJ&citation_for_view=4XbcwOAAAAAJ:u5HHmVD_uO8C"
   },
   {
-   "title": "YOLOv5 v7.0 \u2014 SOTA realtime instance segmentation",
+   "title": "YOLOv5 v7.0: SOTA realtime instance segmentation",
    "venue": "Zenodo (software)",
    "year": 2022,
    "citations": 1387,

@@ -1,7 +1,7 @@
 [
  {
   "repo": "huggingface/transformers",
-  "stars": 165807,
+  "stars": 166460,
   "desc": "\ud83e\udd17 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, f",
   "lang": "Python",
   "prs": 1,
@@ -10,8 +10,8 @@
  },
  {
   "repo": "ultralytics/ultralytics",
-  "stars": 61591,
-  "desc": "Ultralytics YOLO26, YOLO11, YOLOv8 \u2014 object detection, instance segmentation, semantic segmentation, image classification, pose estimation, ",
+  "stars": 61855,
+  "desc": "Ultralytics YOLO27, YOLO26, YOLO11, YOLOv8 \u2014 object detection, instance segmentation, semantic segmentation, image classification, pose esti",
   "lang": "Python",
   "prs": 130,
   "url": "https://github.com/ultralytics/ultralytics",
@@ -19,7 +19,7 @@
  },
  {
   "repo": "microsoft/autogen",
-  "stars": 60979,
+  "stars": 61092,
   "desc": "A programming framework for agentic AI",
   "lang": "Python",
   "prs": 1,
@@ -28,7 +28,7 @@
  },
  {
   "repo": "ultralytics/yolov5",
-  "stars": 58008,
+  "stars": 58062,
   "desc": "Ultralytics YOLOv5 in PyTorch for object detection, instance segmentation, classification, training, and export.",
   "lang": "Python",
   "prs": 65,
@@ -37,7 +37,7 @@
  },
  {
   "repo": "run-llama/llama_index",
-  "stars": 52155,
+  "stars": 52259,
   "desc": "LlamaIndex is the document processing platform for AI",
   "lang": "Python",
   "prs": 1,
@@ -46,7 +46,7 @@
  },
  {
   "repo": "coqui-ai/TTS",
-  "stars": 46007,
+  "stars": 46037,
   "desc": "\ud83d\udc38\ud83d\udcac - a deep learning toolkit for Text-to-Speech, battle-tested in research and production",
   "lang": "Python",
   "prs": 1,
@@ -54,7 +54,7 @@
  },
  {
   "repo": "agno-agi/agno",
-  "stars": 42164,
+  "stars": 42277,
   "desc": "Build, run, and manage agent platforms.",
   "lang": "Python",
   "prs": 1,
@@ -63,7 +63,7 @@
  },
  {
   "repo": "explosion/spaCy",
-  "stars": 33898,
+  "stars": 33910,
   "desc": "\ud83d\udcab Industrial-strength Natural Language Processing (NLP) in Python",
   "lang": "Python",
   "prs": 1,
@@ -71,10 +71,10 @@
  },
  {
   "repo": "huggingface/lerobot",
-  "stars": 27476,
+  "stars": 27676,
   "desc": "\ud83e\udd17 LeRobot: Making AI for Robotics more accessible with end-to-end learning",
   "lang": "Python",
-  "prs": 6,
+  "prs": 8,
   "url": "https://github.com/huggingface/lerobot"
  },
  {
@@ -88,7 +88,7 @@
  },
  {
   "repo": "letta-ai/letta",
-  "stars": 24732,
+  "stars": 24822,
   "desc": "Platform for stateful agents: AI with advanced memory that can learn and self-improve over time.",
   "lang": null,
   "prs": 1,
@@ -97,7 +97,7 @@
  },
  {
   "repo": "EthicalML/awesome-production-machine-learning",
-  "stars": 20909,
+  "stars": 20938,
   "desc": "A curated list of awesome open source libraries to deploy, monitor, version and scale your machine learning",
   "lang": null,
   "prs": 1,
@@ -105,7 +105,7 @@
  },
  {
   "repo": "langchain-ai/langchainjs",
-  "stars": 18185,
+  "stars": 18215,
   "desc": "The agent engineering platform",
   "lang": "TypeScript",
   "prs": 1,
@@ -114,7 +114,7 @@
  },
  {
   "repo": "lancedb/lancedb",
-  "stars": 11419,
+  "stars": 11488,
   "desc": "Developer-friendly OSS embedded retrieval library for multimodal AI. Search More; Manage Less.",
   "lang": "Rust",
   "prs": 96,
@@ -123,7 +123,7 @@
  },
  {
   "repo": "wandb/wandb",
-  "stars": 11247,
+  "stars": 11258,
   "desc": "The AI developer platform. Use Weights & Biases to train and fine-tune models, and manage models from experimentation to production.",
   "lang": "Python",
   "prs": 4,
@@ -132,7 +132,7 @@
  },
  {
   "repo": "voxel51/fiftyone",
-  "stars": 11085,
+  "stars": 11104,
   "desc": "Refine high-quality datasets and visual AI models",
   "lang": "TypeScript",
   "prs": 1,
@@ -141,7 +141,7 @@
  },
  {
   "repo": "thu-ml/tianshou",
-  "stars": 10975,
+  "stars": 10988,
   "desc": "An elegant PyTorch deep reinforcement learning library.",
   "lang": "Python",
   "prs": 2,
@@ -150,7 +150,7 @@
  },
  {
   "repo": "espnet/espnet",
-  "stars": 9958,
+  "stars": 9965,
   "desc": "End-to-End Speech Processing Toolkit",
   "lang": "Python",
   "prs": 1,
@@ -158,7 +158,7 @@
  },
  {
   "repo": "pycaret/pycaret",
-  "stars": 9839,
+  "stars": 9843,
   "desc": "Open-source, low-code AutoML platform for Python. PyCaret 4.0: sklearn-native engine + React control plane.",
   "lang": "Python",
   "prs": 1,
@@ -166,7 +166,7 @@
  },
  {
   "repo": "MorvanZhou/PyTorch-Tutorial",
-  "stars": 8467,
+  "stars": 8469,
   "desc": "Build your neural network easy and fast, \u83ab\u70e6Python\u4e2d\u6587\u6559\u5b66",
   "lang": "Jupyter Notebook",
   "prs": 1,
@@ -174,7 +174,7 @@
  },
  {
   "repo": "catalyst-team/catalyst",
-  "stars": 3383,
+  "stars": 3385,
   "desc": "Accelerated deep learning R&D",
   "lang": "Python",
   "prs": 2,
@@ -183,7 +183,7 @@
  },
  {
   "repo": "hegelai/prompttools",
-  "stars": 3056,
+  "stars": 3054,
   "desc": "Open-source tools for prompt testing and experimentation, with support for both LLMs (e.g. OpenAI, LLaMA) and vector databases (e.g. Chroma,",
   "lang": "Python",
   "prs": 2,
@@ -192,7 +192,7 @@
  },
  {
   "repo": "galilai-group/stable-worldmodel",
-  "stars": 2194,
+  "stars": 2209,
   "desc": "A platform for reproducible world model research and evaluation",
   "lang": "Python",
   "prs": 9,
@@ -201,7 +201,7 @@
  },
  {
   "repo": "Forethought-Technologies/AutoChain",
-  "stars": 1880,
+  "stars": 1881,
   "desc": "AutoChain: Build lightweight, extensible, and testable LLM Agents",
   "lang": "Python",
   "prs": 1,
@@ -209,7 +209,7 @@
  },
  {
   "repo": "triple-mu/YOLOv8-TensorRT",
-  "stars": 1807,
+  "stars": 1811,
   "desc": "YOLOv8 using TensorRT accelerate !",
   "lang": "Python",
   "prs": 1,
@@ -217,7 +217,7 @@
  },
  {
   "repo": "meta-llama/synthetic-data-kit",
-  "stars": 1637,
+  "stars": 1640,
   "desc": "Tool for generating high quality Synthetic datasets",
   "lang": "Python",
   "prs": 1,
@@ -243,7 +243,7 @@
  },
  {
   "repo": "galilai-group/stable-pretraining",
-  "stars": 315,
+  "stars": 318,
   "desc": "Reliable, minimal and scalable library for pretraining foundation and world models",
   "lang": "Python",
   "prs": 3,
@@ -307,20 +307,20 @@
   "url": "https://github.com/ytang07/ai_agents_hackathon_starters"
  },
  {
+  "repo": "lancedb/training",
+  "stars": 5,
+  "desc": "All things training with LanceDB",
+  "lang": "Jupyter Notebook",
+  "prs": 4,
+  "url": "https://github.com/lancedb/training"
+ },
+ {
   "repo": "lancedb/research",
   "stars": 5,
   "desc": "repository containing reproducibility code for R&D experiments and benchmarks",
   "lang": "Python",
   "prs": 4,
   "url": "https://github.com/lancedb/research"
- },
- {
-  "repo": "lancedb/training",
-  "stars": 5,
-  "desc": "All things training with LanceDB",
-  "lang": "Jupyter Notebook",
-  "prs": 3,
-  "url": "https://github.com/lancedb/training"
  },
  {
   "repo": "lancedb/saas-examples-large-scale",
